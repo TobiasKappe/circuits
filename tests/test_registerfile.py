@@ -1,7 +1,7 @@
-from ouca.circuits import sim
-from ouca.riscv.sim import RiscInteger
-
 import pytest
+
+from ouca.circuits import sim
+from ouca.riscv.data import RiscInteger
 
 
 class TestRegisterFileElement:

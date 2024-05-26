@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from ouca.circuits import sim
-
 import pytest
+
+from ouca.circuits import sim
 
 
 class TestEndToEnd:

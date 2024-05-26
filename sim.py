@@ -4,7 +4,7 @@ import queue
 from functools import singledispatchmethod
 from typing import List, Union
 
-from ouca.riscv.sim import RiscInteger
+from ouca.riscv.data import RiscInteger
 
 
 class ContentionException(Exception):
