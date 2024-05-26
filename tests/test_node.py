@@ -1,0 +1,66 @@
+from ouca.circuits import sim
+
+import pytest
+
+
+class TestNode:
+    def test_copy(self):
+        first = sim.Node([True])
+        second = sim.Node([first])
+        first.connections.append(second)
+
+        changed = set(first.propagate(set()))
+
+        assert changed == {second}
+        assert second.value == [True]
+        assert second.upstream is first
+
+    def test_transitive(self):
+        first = sim.Node([True])
+        second = sim.Node(connections=[first])
+        third = sim.Node(connections=[second])
+        first.connections.append(second)
+        second.connections.append(third)
+
+        changed = set(first.propagate(set()))
+
+        assert changed == {second, third}
+        assert second.value == [True]
+        assert second.upstream is first
+        assert third.value == [True]
+        assert third.upstream is second
+
+    def test_fork(self):
+        first = sim.Node([True])
+        second = sim.Node(connections=[first])
+        third = sim.Node(connections=[first])
+        first.connections.append(second)
+        first.connections.append(third)
+
+        changed = set(first.propagate(set()))
+
+        assert changed == {second, third}
+        assert second.value == [True]
+        assert second.upstream is first
+        assert third.value == [True]
+        assert third.upstream is first
+
+    def test_contention(self):
+        first = sim.Node([True])
+        second = sim.Node()
+        third = sim.Node(connections=[first, second])
+        first.connections.append(third)
+        second.connections.append(third)
+
+        first.value = [True]
+        changed = set(first.propagate(set()))
+
+        assert changed == {second, third}
+        assert second.value == [True]
+        assert second.upstream is third
+        assert third.value == [True]
+        assert third.upstream is first
+
+        second.value = False
+        with pytest.raises(sim.ContentionException):
+            changed = list(second.propagate(set()))

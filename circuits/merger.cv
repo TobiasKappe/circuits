@@ -1,0 +1,248 @@
+{
+   "clockEnabled" : true,
+   "focussedCircuit" : 60290920473,
+   "name" : "merger",
+   "orderedTabs" : [
+      "60290920473"
+   ],
+   "projectId" : "fcs8MymzXWpIWVqJppkB",
+   "scopes" : [
+      {
+         "Input" : [
+            {
+               "customData" : {
+                  "constructorParamaters" : [
+                     "RIGHT",
+                     2,
+                     {
+                        "id" : "ibWB7zzMiaBd0BNWhe4t",
+                        "x" : 0,
+                        "y" : 20
+                     }
+                  ],
+                  "nodes" : {
+                     "output1" : 4
+                  },
+                  "values" : {
+                     "state" : 2
+                  }
+               },
+               "direction" : "RIGHT",
+               "label" : "I01",
+               "labelDirection" : "LEFT",
+               "objectType" : "Input",
+               "propagationDelay" : 0,
+               "x" : 510,
+               "y" : 110
+            },
+            {
+               "customData" : {
+                  "constructorParamaters" : [
+                     "RIGHT",
+                     1,
+                     {
+                        "id" : "bfE53tGaq70UsrxxOR5i",
+                        "x" : 0,
+                        "y" : 40
+                     }
+                  ],
+                  "nodes" : {
+                     "output1" : 5
+                  },
+                  "values" : {
+                     "state" : 1
+                  }
+               },
+               "direction" : "RIGHT",
+               "label" : "I2",
+               "labelDirection" : "LEFT",
+               "objectType" : "Input",
+               "propagationDelay" : 0,
+               "x" : 520,
+               "y" : 130
+            },
+            {
+               "customData" : {
+                  "constructorParamaters" : [
+                     "RIGHT",
+                     1,
+                     {
+                        "id" : "NKBTc0gnl6TS1bA17gEq",
+                        "x" : 0,
+                        "y" : 60
+                     }
+                  ],
+                  "nodes" : {
+                     "output1" : 6
+                  },
+                  "values" : {
+                     "state" : 1
+                  }
+               },
+               "direction" : "RIGHT",
+               "label" : "I3",
+               "labelDirection" : "LEFT",
+               "objectType" : "Input",
+               "propagationDelay" : 0,
+               "x" : 520,
+               "y" : 150
+            }
+         ],
+         "Output" : [
+            {
+               "customData" : {
+                  "constructorParamaters" : [
+                     "LEFT",
+                     4,
+                     {
+                        "id" : "0UyNcTnBkFNSv58KswYC",
+                        "x" : 100,
+                        "y" : 20
+                     }
+                  ],
+                  "nodes" : {
+                     "inp1" : 7
+                  }
+               },
+               "direction" : "LEFT",
+               "label" : "out",
+               "labelDirection" : "RIGHT",
+               "objectType" : "Output",
+               "propagationDelay" : 0,
+               "x" : 690,
+               "y" : 160
+            }
+         ],
+         "Splitter" : [
+            {
+               "customData" : {
+                  "constructorParamaters" : [
+                     "LEFT",
+                     4,
+                     [
+                        2,
+                        1,
+                        1
+                     ]
+                  ],
+                  "nodes" : {
+                     "inp1" : 0,
+                     "outputs" : [
+                        1,
+                        2,
+                        3
+                     ]
+                  }
+               },
+               "direction" : "LEFT",
+               "label" : "",
+               "labelDirection" : "LEFT",
+               "objectType" : "Splitter",
+               "propagationDelay" : 10,
+               "x" : 600,
+               "y" : 140
+            }
+         ],
+         "allNodes" : [
+            {
+               "bitWidth" : 4,
+               "connections" : [
+                  7
+               ],
+               "label" : "",
+               "type" : 0,
+               "x" : -10,
+               "y" : 20
+            },
+            {
+               "bitWidth" : 2,
+               "connections" : [
+                  4
+               ],
+               "label" : "",
+               "type" : 0,
+               "x" : 20,
+               "y" : -30
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  5
+               ],
+               "label" : "",
+               "type" : 0,
+               "x" : 20,
+               "y" : -10
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  6
+               ],
+               "label" : "",
+               "type" : 0,
+               "x" : 20,
+               "y" : 10
+            },
+            {
+               "bitWidth" : 2,
+               "connections" : [
+                  1
+               ],
+               "label" : "",
+               "type" : 1,
+               "x" : 20,
+               "y" : 0
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  2
+               ],
+               "label" : "",
+               "type" : 1,
+               "x" : 10,
+               "y" : 0
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  3
+               ],
+               "label" : "",
+               "type" : 1,
+               "x" : 10,
+               "y" : 0
+            },
+            {
+               "bitWidth" : 4,
+               "connections" : [
+                  0
+               ],
+               "label" : "",
+               "type" : 0,
+               "x" : 40,
+               "y" : 0
+            }
+         ],
+         "id" : 60290920473,
+         "layout" : {
+            "height" : 80,
+            "titleEnabled" : true,
+            "title_x" : 50,
+            "title_y" : 13,
+            "width" : 100
+         },
+         "name" : "Main",
+         "nodes" : [],
+         "restrictedCircuitElementsUsed" : [],
+         "verilogMetadata" : {
+            "code" : "// Write Some Verilog Code Here!",
+            "isMainCircuit" : false,
+            "isVerilogCircuit" : false,
+            "subCircuitScopeIds" : []
+         }
+      }
+   ],
+   "timePeriod" : 500
+}

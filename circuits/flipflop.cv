@@ -1,0 +1,394 @@
+{
+   "clockEnabled" : true,
+   "focussedCircuit" : 69755877639,
+   "name" : "flipflop",
+   "orderedTabs" : [
+      "69755877639"
+   ],
+   "projectId" : "RjCyWiE7fb0AmaWmk3Sq",
+   "scopes" : [
+      {
+         "Input" : [
+            {
+               "customData" : {
+                  "constructorParamaters" : [
+                     "RIGHT",
+                     1,
+                     {
+                        "id" : "9miWHsbXAinyU5RQoxat",
+                        "x" : 0,
+                        "y" : 20
+                     }
+                  ],
+                  "nodes" : {
+                     "output1" : 0
+                  },
+                  "values" : {
+                     "state" : 0
+                  }
+               },
+               "direction" : "RIGHT",
+               "label" : "R",
+               "labelDirection" : "LEFT",
+               "objectType" : "Input",
+               "propagationDelay" : 0,
+               "x" : 370,
+               "y" : 90
+            },
+            {
+               "customData" : {
+                  "constructorParamaters" : [
+                     "RIGHT",
+                     1,
+                     {
+                        "id" : "dhx9wgLI9silXE3DQnh3",
+                        "x" : 0,
+                        "y" : 40
+                     }
+                  ],
+                  "nodes" : {
+                     "output1" : 1
+                  },
+                  "values" : {
+                     "state" : 0
+                  }
+               },
+               "direction" : "RIGHT",
+               "label" : "S",
+               "labelDirection" : "LEFT",
+               "objectType" : "Input",
+               "propagationDelay" : 0,
+               "x" : 370,
+               "y" : 190
+            }
+         ],
+         "NorGate" : [
+            {
+               "customData" : {
+                  "constructorParamaters" : [
+                     "RIGHT",
+                     2,
+                     1
+                  ],
+                  "nodes" : {
+                     "inp" : [
+                        12,
+                        13
+                     ],
+                     "output1" : 14
+                  }
+               },
+               "direction" : "RIGHT",
+               "label" : "lower NOR",
+               "labelDirection" : "DOWN",
+               "objectType" : "NorGate",
+               "propagationDelay" : 10,
+               "x" : 490,
+               "y" : 180
+            },
+            {
+               "customData" : {
+                  "constructorParamaters" : [
+                     "RIGHT",
+                     2,
+                     1
+                  ],
+                  "nodes" : {
+                     "inp" : [
+                        15,
+                        16
+                     ],
+                     "output1" : 17
+                  }
+               },
+               "direction" : "RIGHT",
+               "label" : "upper NOR",
+               "labelDirection" : "UP",
+               "objectType" : "NorGate",
+               "propagationDelay" : 10,
+               "x" : 490,
+               "y" : 100
+            }
+         ],
+         "Output" : [
+            {
+               "customData" : {
+                  "constructorParamaters" : [
+                     "LEFT",
+                     1,
+                     {
+                        "id" : "oFyU6AoewAzgogCf0lRE",
+                        "x" : 100,
+                        "y" : 20
+                     }
+                  ],
+                  "nodes" : {
+                     "inp1" : 10
+                  }
+               },
+               "direction" : "LEFT",
+               "label" : "Q",
+               "labelDirection" : "RIGHT",
+               "objectType" : "Output",
+               "propagationDelay" : 0,
+               "x" : 660,
+               "y" : 100
+            },
+            {
+               "customData" : {
+                  "constructorParamaters" : [
+                     "LEFT",
+                     1,
+                     {
+                        "id" : "YoZDHKMq5aWZagOJUFFI",
+                        "x" : 100,
+                        "y" : 40
+                     }
+                  ],
+                  "nodes" : {
+                     "inp1" : 11
+                  }
+               },
+               "direction" : "LEFT",
+               "label" : "Qn",
+               "labelDirection" : "RIGHT",
+               "objectType" : "Output",
+               "propagationDelay" : 0,
+               "x" : 660,
+               "y" : 180
+            }
+         ],
+         "allNodes" : [
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  15
+               ],
+               "label" : "",
+               "type" : 1,
+               "x" : 10,
+               "y" : 0
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  13
+               ],
+               "label" : "",
+               "type" : 1,
+               "x" : 10,
+               "y" : 0
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  3,
+                  18
+               ],
+               "label" : "",
+               "type" : 2,
+               "x" : 540,
+               "y" : 100
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  2,
+                  4
+               ],
+               "label" : "",
+               "type" : 2,
+               "x" : 540,
+               "y" : 130
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  3,
+                  5
+               ],
+               "label" : "",
+               "type" : 2,
+               "x" : 460,
+               "y" : 130
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  4,
+                  12
+               ],
+               "label" : "",
+               "type" : 2,
+               "x" : 460,
+               "y" : 170
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  7,
+                  11,
+                  14
+               ],
+               "label" : "",
+               "type" : 2,
+               "x" : 540,
+               "y" : 180
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  6,
+                  8
+               ],
+               "label" : "",
+               "type" : 2,
+               "x" : 540,
+               "y" : 150
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  7,
+                  9
+               ],
+               "label" : "",
+               "type" : 2,
+               "x" : 430,
+               "y" : 150
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  8,
+                  16
+               ],
+               "label" : "",
+               "type" : 2,
+               "x" : 430,
+               "y" : 110
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  18
+               ],
+               "label" : "",
+               "type" : 0,
+               "x" : 10,
+               "y" : 0
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  6
+               ],
+               "label" : "",
+               "type" : 0,
+               "x" : 10,
+               "y" : 0
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  5
+               ],
+               "label" : "",
+               "type" : 0,
+               "x" : -10,
+               "y" : -10
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  1
+               ],
+               "label" : "",
+               "type" : 0,
+               "x" : -10,
+               "y" : 10
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  6
+               ],
+               "label" : "",
+               "type" : 1,
+               "x" : 30,
+               "y" : 0
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  0
+               ],
+               "label" : "",
+               "type" : 0,
+               "x" : -10,
+               "y" : -10
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  9
+               ],
+               "label" : "",
+               "type" : 0,
+               "x" : -10,
+               "y" : 10
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  18
+               ],
+               "label" : "",
+               "type" : 1,
+               "x" : 30,
+               "y" : 0
+            },
+            {
+               "bitWidth" : 1,
+               "connections" : [
+                  2,
+                  10,
+                  17
+               ],
+               "label" : "",
+               "type" : 2,
+               "x" : 550,
+               "y" : 100
+            }
+         ],
+         "id" : 69755877639,
+         "layout" : {
+            "height" : 100,
+            "titleEnabled" : true,
+            "title_x" : 50,
+            "title_y" : 13,
+            "width" : 100
+         },
+         "name" : "Main",
+         "nodes" : [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            18
+         ],
+         "restrictedCircuitElementsUsed" : [],
+         "verilogMetadata" : {
+            "code" : "// Write Some Verilog Code Here!",
+            "isMainCircuit" : false,
+            "isVerilogCircuit" : false,
+            "subCircuitScopeIds" : []
+         }
+      }
+   ],
+   "timePeriod" : 500
+}
