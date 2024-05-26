@@ -218,26 +218,6 @@ class Circuit:
                 for i in range(2 ** lengths[0]):
                     yield [i] + value
 
-    def test_values(self):
-        for input_element in self.inputs:
-            print(f'{input_element.label:>6} |', end='')
-        for output_element in self.outputs:
-            print(f'{output_element.label:>6} |', end='')
-        print()
-
-        bitwidths = [e.bitwidth for e in self.inputs]
-        for input_vector in self.input_vectors(bitwidths):
-            for i, v in enumerate(input_vector):
-                self.inputs[i].state = v
-                print(f'{v:>6} |', end='')
-
-            self.simulate()
-
-            for output_element in self.outputs:
-                print(f'{output_element.value:>6} |', end='')
-
-            print()
-
 
 class CombinatorialElement(Element):
     @singledispatchmethod
@@ -862,8 +842,3 @@ class RegisterFileElement(Element):
 
         if self.clock.value is not None:
             self.prev_clock = self.clock.value[0]
-
-
-if __name__ == '__main__':
-    c = Circuit.load_file('subcircuit.cv', 'Main')
-    c.test_values()
