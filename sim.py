@@ -498,7 +498,7 @@ class MultiplexerElement(Element):
         self.signal_size = signal_size
         self.inp = inp
         self.output1 = output1
-        super().__init__(inp + [output1], **kwargs)
+        super().__init__([self.controlSignalInput] + inp + [output1], **kwargs)
 
     @__init__.register
     def load(self, raw_element: dict, **kwargs):
@@ -527,6 +527,46 @@ class MultiplexerElement(Element):
         index = self.control_index()
         self.output1.value = self.inp[index].value
         yield self.output1
+
+
+@Circuit.add_impl('Decoder')
+class DecoderElement(Element):
+    @singledispatchmethod
+    def __init__(
+        self,
+        signal_size: int,
+        input: Node,
+        output1: List[Node],
+        **kwargs
+    ):
+        self.signal_size = signal_size
+        self.input = input
+        self.output1 = output1
+        super().__init__([self.input] + self.output1, **kwargs)
+
+    @__init__.register
+    def load(self, raw_element: dict, **kwargs):
+        super().__init__(raw_element, **kwargs)
+        self.signal_size = self.params[1]
+
+    def is_resolvable(self):
+        if self.input.value is None:
+            return False
+        if None in self.input.value:
+            return False
+
+        return True
+
+    def resolve(self):
+        index = 0
+        for val in reversed(self.input.value):
+            index = index << 1
+            if val is True:
+                index |= 1
+
+        for i in range(2**self.signal_size):
+            self.output1[i].value = [i == index]
+            yield self.output1[i]
 
 
 @Circuit.add_impl('ConstantVal')
