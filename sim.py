@@ -199,8 +199,17 @@ class Circuit:
                 nodes[i].connections.append(nodes[j])
 
         elements = []
-        for name, impl in Circuit.IMPL_MAP.items():
-            for raw_element in raw_scope.get(name, []):
+        for name, raw_elements in raw_scope.items():
+            if not name[0].isupper():
+                # Keys that do not start with an upper case letter are
+                # scope metadata, not elements; we can ignore them.
+                continue
+
+            if name not in Circuit.IMPL_MAP:
+                raise Exception(f'Unknown element: "{name}"')
+
+            impl = Circuit.IMPL_MAP[name]
+            for raw_element in raw_elements:
                 element = impl(
                     raw_element,
                     nodes=nodes,
