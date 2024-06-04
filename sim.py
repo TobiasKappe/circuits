@@ -200,6 +200,9 @@ class Circuit:
 
         elements = []
         for name, raw_elements in raw_scope.items():
+            if name == "Text":
+                continue
+
             if not name[0].isupper():
                 # Keys that do not start with an upper case letter are
                 # scope metadata, not elements; we can ignore them.
