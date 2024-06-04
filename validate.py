@@ -6,11 +6,11 @@ import json
 
 
 def bitstring_to_list(bitstring):
-    return [v == "1" for v in bitstring]
+    return [v == "1" for v in bitstring][::-1]
 
 
 def list_to_bitstring(list_):
-    return ''.join(map(lambda x: '1' if x else '0', list_))
+    return ''.join(map(lambda x: '1' if x else '0', list_[::-1]))
 
 
 def main():
