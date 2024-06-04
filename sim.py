@@ -508,7 +508,7 @@ class MultiplexerElement(Element):
 
     def control_index(self):
         index = 0
-        for val in self.controlSignalInput.value:
+        for val in reversed(self.controlSignalInput.value):
             index = index << 1
             if val is True:
                 index |= 1

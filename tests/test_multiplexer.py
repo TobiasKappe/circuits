@@ -33,9 +33,9 @@ class TestMultiplexer:
     @pytest.mark.parametrize(
         'signal_size, signal_val, input_vals, output_val',
         [
-            [1, [False, False], [[False], [True]], [False]],
+            [1, [False], [[False], [True]], [False]],
             [2, [True, False], [None, [True], [True], [True]], [True]],
-            [2, [False, True], [[True], [False], [True], [True]], [False]],
+            [2, [False, True], [[True], [True], [False], [True]], [False]],
         ]
     )
     def test_resolve(
