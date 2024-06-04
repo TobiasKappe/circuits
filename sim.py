@@ -276,16 +276,22 @@ class CombinatorialElement(Element):
 class AndGateElement(CombinatorialElement):
     def is_resolvable_per_bit(self, i):
         for inp in self.inp:
-            if inp.value is not None and inp.value[i] is False:
+            if inp.value is not None and \
+             i < len(inp.value) and \
+             inp.value[i] is False:
                 return True
         for inp in self.inp:
-            if inp.value is None or inp.value[i] is None:
+            if inp.value is None or \
+             i >= len(inp.value) or \
+             inp.value[i] is None:
                 return False
         return True
 
     def resolve_per_bit(self, i):
         for inp in self.inp:
-            if inp.value is not None and inp.value[i] is False:
+            if inp.value is not None and \
+             i < len(inp.value) and \
+             inp.value[i] is False:
                 return False
         return True
 
@@ -294,16 +300,22 @@ class AndGateElement(CombinatorialElement):
 class NorGateElement(CombinatorialElement):
     def is_resolvable_per_bit(self, i):
         for inp in self.inp:
-            if inp.value is not None and inp.value[i] is True:
+            if inp.value is not None and \
+             i < len(inp.value) and \
+             inp.value[i] is True:
                 return True
         for inp in self.inp:
-            if inp.value is None or inp.value[i] is None:
+            if inp.value is None or \
+             i >= len(inp.value) or \
+             inp.value[i] is None:
                 return False
         return True
 
     def resolve_per_bit(self, i):
         for inp in self.inp:
-            if inp.value is not None and inp.value[i] is True:
+            if inp.value is not None and \
+             i < len(inp.value) and \
+             inp.value[i] is True:
                 return False
         return True
 
@@ -312,16 +324,22 @@ class NorGateElement(CombinatorialElement):
 class OrGateElement(CombinatorialElement):
     def is_resolvable_per_bit(self, i):
         for inp in self.inp:
-            if inp.value is not None and inp.value[i] is True:
+            if inp.value is not None and \
+             i < len(inp.value) and \
+             inp.value[i] is True:
                 return True
         for inp in self.inp:
-            if inp.value is None or inp.value[i] is None:
+            if inp.value is None or \
+             i >= len(inp.value) or \
+             inp.value[i] is None:
                 return False
         return True
 
     def resolve_per_bit(self, i):
         for inp in self.inp:
-            if inp.value is not None and inp.value[i]:
+            if inp.value is not None \
+             and i < len(inp.value) and \
+             inp.value[i] is True:
                 return True
         return False
 
@@ -330,16 +348,22 @@ class OrGateElement(CombinatorialElement):
 class NandGateElement(CombinatorialElement):
     def is_resolvable_per_bit(self, i):
         for inp in self.inp:
-            if inp.value is not None and inp.value[i] is True:
+            if inp.value is not None \
+             and i < len(inp.value) and \
+             inp.value[i] is True:
                 return True
         for inp in self.inp:
-            if inp.value is None or inp.value[i] is None:
+            if inp.value is None or \
+             i >= len(inp.value) or \
+             inp.value[i] is None:
                 return False
         return True
 
     def resolve_per_bit(self, i):
         for inp in self.inp:
-            if inp.value is not None and inp.value[i]:
+            if inp.value is not None \
+             and i < len(inp.value) and \
+             inp.value[i] is True:
                 return False
         return True
 
@@ -375,8 +399,8 @@ class NotGateElement(Element):
     def is_resolvable(self):
         if self.inp1.value is None:
             return False
-        for i in self.inp1.value:
-            if not isinstance(i, bool):
+        for val in self.inp1.value:
+            if val is None:
                 return False
         return True
 
