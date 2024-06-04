@@ -253,9 +253,9 @@ class CombinatorialElement(Element):
 
     def is_resolvable(self):
         for i in range(self.bitwidth):
-            if not self.is_resolvable_per_bit(i):
-                return False
-        return True
+            if self.is_resolvable_per_bit(i):
+                return True
+        return False
 
     def is_resolvable_per_bit(self):
         raise NotImplementedError
