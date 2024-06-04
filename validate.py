@@ -1,4 +1,4 @@
-from circuits import sim
+from ouca.circuits import sim
 
 from argparse import ArgumentParser
 
@@ -53,3 +53,7 @@ def main():
                         f'expected "{expected_value}" '
                         f'but got "{output_value}"'
                     )
+
+
+if __name__ == '__main__':
+    main()
