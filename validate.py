@@ -42,9 +42,12 @@ def main():
                 if expected_value is None:
                     continue
 
-                output_value = list_to_bitstring(
-                    circuit.get_output(output_name).value
-                )
+                if circuit.get_output(output_name).value:
+                    output_value = list_to_bitstring(
+                        circuit.get_output(output_name).value
+                    )
+                else:
+                    output_value = None
 
                 if output_value != expected_value:
                     print(
