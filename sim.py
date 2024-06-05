@@ -69,7 +69,7 @@ class Element:
         self.delay = raw_element['propagationDelay']
         self.params = raw_element['customData']['constructorParamaters']
 
-        raw_nodes = raw_element['customData']['nodes']
+        raw_nodes = raw_element['customData'].get('nodes', {})
         self.nodes = set()
         for identifier, ids in raw_nodes.items():
             if isinstance(ids, int):
@@ -209,7 +209,7 @@ class Circuit:
 
         elements = []
         for name, raw_elements in raw_scope.items():
-            if name == "Text" or name == "DigitalLed":
+            if name == "DigitalLed":
                 continue
 
             if not name[0].isupper():
@@ -1107,3 +1107,9 @@ class RegisterFileElement(Element):
 
         if self.clock.value is not None:
             self.prev_clock = self.clock.value[0]
+
+
+@Circuit.add_impl('Text')
+class TextElement(Element):
+    def is_resolvable(self):
+        return False
