@@ -137,8 +137,9 @@ class Circuit:
         'Output': OutputElement,
     }
 
-    def __init__(self, elements: List[Element]):
+    def __init__(self, elements: List[Element], nodes: List[Node]):
         self.elements = elements
+        self.nodes = nodes
 
     @classmethod
     def add_impl(cls, name):
@@ -167,6 +168,9 @@ class Circuit:
                 return output
 
     def simulate(self):
+        for node in self.nodes:
+            node.upstream = None
+
         q = queue.Queue()
         for element in self.elements:
             if element.is_resolvable():
@@ -225,7 +229,7 @@ class Circuit:
                 )
                 elements.append(element)
 
-        return cls(elements)
+        return cls(elements, nodes)
 
     def input_vectors(self, lengths):
         if len(lengths) == 0:

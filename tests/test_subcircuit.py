@@ -7,7 +7,7 @@ class TestSubCircuit:
     def test_copy_input(self):
         inner = [sim.InputElement(sim.Node(), None) for _ in range(2)]
         outer = [sim.Node() for _ in range(2)]
-        sub = sim.Circuit(inner)
+        sub = sim.Circuit(inner, sum((n.nodes for n in inner), start=[]))
         element = sim.SubCircuitElement(sub, outer, [])
 
         assert element.is_resolvable()
@@ -22,7 +22,7 @@ class TestSubCircuit:
     def test_copy_output(self):
         inner = [sim.OutputElement(sim.Node()) for _ in range(2)]
         outer = [sim.Node() for _ in range(2)]
-        sub = sim.Circuit(inner)
+        sub = sim.Circuit(inner, sum((n.nodes for n in inner), start=[]))
         element = sim.SubCircuitElement(sub, [], outer)
 
         assert element.is_resolvable()
@@ -49,7 +49,10 @@ class TestSubCircuit:
         outer_input = sim.Node()
         outer_output = sim.Node()
 
-        sub = sim.Circuit([inner_input, inner_gate, inner_output])
+        sub = sim.Circuit(
+            [inner_input, inner_gate, inner_output],
+            inner_input.nodes + inner_output.nodes + inner_gate.nodes,
+        )
         element = sim.SubCircuitElement(sub, [outer_input], [outer_output])
 
         assert element.is_resolvable()
