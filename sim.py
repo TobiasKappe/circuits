@@ -16,16 +16,18 @@ class Node:
         self,
         value: Union[List[bool], None] = None,
         connections=None,
-        bitwidth=1
+        bitwidth=1,
+        index=None,
     ):
         self.value = value
         self.upstream = None
         self.connections = connections or []
         self.bitwidth = bitwidth
+        self.index = index
 
     @classmethod
-    def load(cls, raw_element: dict):
-        return cls(bitwidth=raw_element['bitWidth'])
+    def load(cls, raw_element: dict, index=None):
+        return cls(bitwidth=raw_element['bitWidth'], index=index)
 
     def propagate(self, seen):
         for connection in self.connections:
@@ -36,7 +38,10 @@ class Node:
                 if connection.upstream is None:
                     connection.upstream = self
                 elif connection.upstream is not self:
-                    raise ContentionException
+                    raise ContentionException(
+                        f'Nodes {self.index} and {connection.upstream.index} '
+                        f'are competing for node {connection.index}'
+                    )
 
                 connection.value = self.value
                 yield connection
@@ -191,8 +196,8 @@ class Circuit:
     @classmethod
     def load(cls, raw_scope, raw_scopes):
         nodes = []
-        for raw_node in raw_scope['allNodes']:
-            nodes.append(Node.load(raw_node))
+        for i, raw_node in enumerate(raw_scope['allNodes']):
+            nodes.append(Node.load(raw_node, index=i))
 
         for i, raw_node in enumerate(raw_scope['allNodes']):
             for j in raw_node['connections']:
