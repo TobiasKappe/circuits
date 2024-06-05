@@ -187,15 +187,23 @@ class Circuit:
                         q.put(n)
 
     @classmethod
-    def load_file(cls, filename, main_scope_name):
-        with open(filename, 'r') as handle:
-            obj = json.load(handle)
-
+    def load_obj(cls, obj, main_scope_name):
         for raw_scope in obj['scopes']:
             if raw_scope['name'] == main_scope_name:
                 return cls.load(raw_scope, obj['scopes'])
 
         raise Exception(f'Could not find scope named {main_scope_name}')
+
+    @classmethod
+    def load_str(cls, string, main_scope_name):
+        return cls.load_obj(json.load(string), main_scope_name)
+
+    @classmethod
+    def load_file(cls, filename, main_scope_name):
+        with open(filename, 'r') as handle:
+            contents = handle.read()
+
+        return cls.load_str(contents, main_scope_name)
 
     @classmethod
     def load(cls, raw_scope, raw_scopes):
