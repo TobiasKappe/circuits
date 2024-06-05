@@ -685,6 +685,37 @@ class ConstantValElement(Element):
         yield self.output1
 
 
+class FixedValElement(Element):
+    fixed_value = None
+
+    @singledispatchmethod
+    def __init__(self, output1: Node, **kwargs):
+        super().__init__([output1], **kwargs)
+        self.output1 = output1
+
+    @__init__.register
+    def load(self, raw_element: dict, **kwargs):
+        super().__init__(raw_element, **kwargs)
+        self.bitwidth = self.params[0]
+
+    def is_resolvable(self):
+        return True
+
+    def resolve(self):
+        self.output1.value = [self.fixed_value] * self.bitwidth
+        yield self.output1
+
+
+@Circuit.add_impl('Ground')
+class GroundElement(FixedValElement):
+    fixed_value = False
+
+
+@Circuit.add_impl('Power')
+class PowerElement(FixedValElement):
+    fixed_value = True
+
+
 @Circuit.add_impl('PriorityEncoder')
 class PriorityEncoderElement(Element):
     @singledispatchmethod
