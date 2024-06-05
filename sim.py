@@ -775,7 +775,7 @@ class ConstantValElement(Element):
     @__init__.register
     def load(self, raw_element: dict, **kwargs):
         super().__init__(raw_element, **kwargs)
-        self.value = [v == "1" for v in self.params[2]]
+        self.value = [v == "1" for v in self.params[2]][::-1]
         self.bitwidth = self.params[1]
         assert self.bitwidth == len(self.value)
 
