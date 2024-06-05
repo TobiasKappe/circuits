@@ -209,7 +209,7 @@ class Circuit:
 
         elements = []
         for name, raw_elements in raw_scope.items():
-            if name == "Text":
+            if name == "Text" or name == "DigitalLed":
                 continue
 
             if not name[0].isupper():
