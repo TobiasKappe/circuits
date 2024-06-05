@@ -466,14 +466,15 @@ class SplitterElement(Element):
                 self.outputs[i].value = self.inp1.value[pos:pos+width]
                 yield self.outputs[i]
                 pos = pos + width
-            self.prev_inp = self.inp1.value
         elif self.prev_outputs != [o.value for o in self.outputs]:
             combined = []
             for output in self.outputs:
                 combined += output.value
             self.inp1.value = combined
             yield self.inp1
-            self.prev_outputs = [o.value for o in self.outputs]
+
+        self.prev_inp = self.inp1.value
+        self.prev_outputs = [o.value for o in self.outputs]
 
 
 @Circuit.add_impl('SubCircuit')
