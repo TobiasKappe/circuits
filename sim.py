@@ -377,8 +377,9 @@ class NandGateElement(CombinatorialElement):
         return True
 
 
-@Circuit.add_impl('XorGate')
-class XorGateElement(CombinatorialElement):
+class ParityGateElement(CombinatorialElement):
+    start_parity = None
+
     def is_resolvable_per_bit(self, i):
         for inp in self.inp:
             if inp.value is None or inp.value[i] is None:
@@ -386,11 +387,21 @@ class XorGateElement(CombinatorialElement):
         return True
 
     def resolve_per_bit(self, i):
-        parity = False
+        parity = self.start_parity
         for inp in self.inp:
             if inp.value[i] is True:
                 parity = not parity
         return parity
+
+
+@Circuit.add_impl('XorGate')
+class XorGateElement(ParityGateElement):
+    start_parity = False
+
+
+@Circuit.add_impl('XnorGate')
+class XnorGateElement(ParityGateElement):
+    start_parity = True
 
 
 @Circuit.add_impl('NotGate')

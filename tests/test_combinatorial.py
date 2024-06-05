@@ -46,6 +46,16 @@ class TestCombinatorialElement:
             [sim.XorGateElement, [True, False], True],
             [sim.XorGateElement, [True, True], True],
             [sim.XorGateElement, [None, None, True], False],
+            [sim.XnorGateElement, [None, None], False],
+            [sim.XnorGateElement, [None, False], False],
+            [sim.XnorGateElement, [False, None], False],
+            [sim.XnorGateElement, [None, True], False],
+            [sim.XnorGateElement, [True, None], False],
+            [sim.XnorGateElement, [False, False], True],
+            [sim.XnorGateElement, [False, True], True],
+            [sim.XnorGateElement, [True, False], True],
+            [sim.XnorGateElement, [True, True], True],
+            [sim.XnorGateElement, [None, None, True], False],
         ]
     )
     def test_is_resolvable(self, cls, inputs, resolvable):
@@ -85,6 +95,10 @@ class TestCombinatorialElement:
             [sim.XorGateElement, [False, True], True],
             [sim.XorGateElement, [True, False], True],
             [sim.XorGateElement, [True, True], False],
+            [sim.XnorGateElement, [False, False], True],
+            [sim.XnorGateElement, [False, True], False],
+            [sim.XnorGateElement, [True, False], False],
+            [sim.XnorGateElement, [True, True], True],
         ]
     )
     def test_resolve(self, cls, inputs, result):
