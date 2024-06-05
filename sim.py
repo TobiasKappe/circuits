@@ -209,9 +209,6 @@ class Circuit:
 
         elements = []
         for name, raw_elements in raw_scope.items():
-            if name == "DigitalLed":
-                continue
-
             if not name[0].isupper():
                 # Keys that do not start with an upper case letter are
                 # scope metadata, not elements; we can ignore them.
@@ -1119,3 +1116,28 @@ class TextElement(Element):
 class RectangleElement(Element):
     def is_resolvable(self):
         return False
+
+
+@Circuit.add_impl('DigitalLed')
+class DigitalLedElement(Element):
+    @singledispatchmethod
+    def __init__(self, inp1: Node, **kwargs):
+        super().__init__(input, **kwargs)
+        self.state = False
+        self.inp1 = input
+
+    @__init__.register
+    def load(self, raw_element: dict, **kwargs):
+        super().__init__(raw_element, **kwargs)
+
+    def is_resolvable(self):
+        if self.inp1.value is None:
+            return False
+        if self.inp1.value == []:
+            return False
+
+        return True
+
+    def resolve(self):
+        self.state = self.inp1.value[0]
+        yield from ()
