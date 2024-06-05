@@ -1113,3 +1113,9 @@ class RegisterFileElement(Element):
 class TextElement(Element):
     def is_resolvable(self):
         return False
+
+
+@Circuit.add_impl('Rectangle')
+class RectangleElement(Element):
+    def is_resolvable(self):
+        return False
