@@ -30,6 +30,9 @@ def main():
         for i, subcircuit_test in enumerate(subcircuit_tests):
             circuit = sim.Circuit.load_file(args.circuit, subcircuit)
 
+            # Flush the values that were left in the circuit
+            circuit.simulate()
+
             inputs = subcircuit_test['inputs'].items()
             for input_name, input_value in inputs:
                 input_value = bitstring_to_list(input_value)
