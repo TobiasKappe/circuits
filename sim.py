@@ -1135,6 +1135,18 @@ class RectangleElement(Element):
         return False
 
 
+@Circuit.add_impl('Arrow')
+class ArrowElement(Element):
+    def is_resolvable(self):
+        return False
+
+
+@Circuit.add_impl('Image')
+class ImageElement(Element):
+    def is_resolvable(self):
+        return False
+
+
 @Circuit.add_impl('DigitalLed')
 class DigitalLedElement(Element):
     @singledispatchmethod
