@@ -184,6 +184,15 @@ class Circuit:
             for element in self.elements:
                 if set(element.nodes) & changed and element.is_resolvable():
                     for n in element.resolve():
+                        if n.upstream is None:
+                            n.upstream = element
+                        elif n.upstream is not element:
+                            raise ContentionException(
+                                f'Node {n.index} is receiving a value from '
+                                'something other than its attached element '
+                                f'(of type {type(element)}).'
+                            )
+
                         q.put(n)
 
     @classmethod
