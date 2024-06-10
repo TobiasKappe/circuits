@@ -253,6 +253,11 @@ class Circuit:
                 for i in range(2 ** lengths[0]):
                     yield [i] + value
 
+    def element_of(self, node):
+        for element in self.elements:
+            if node in element.nodes:
+                return element
+
 
 class CombinatorialElement(Element):
     @singledispatchmethod
