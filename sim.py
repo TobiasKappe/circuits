@@ -1151,8 +1151,8 @@ class ArrowElement(Element):
         return False
 
 
-@Circuit.add_impl('Image')
-class ImageElement(Element):
+@Circuit.add_impl('ImageAnnotation')
+class ImageAnnotationElement(Element):
     def is_resolvable(self):
         return False
 
