@@ -1157,6 +1157,12 @@ class ImageAnnotationElement(Element):
         return False
 
 
+@Circuit.add_impl('SevenSegDisplay')
+class SevenSegDispleyElement(Element):
+    def is_resolvable(self):
+        return False
+
+
 @Circuit.add_impl('DigitalLed')
 class DigitalLedElement(Element):
     @singledispatchmethod
