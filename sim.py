@@ -475,6 +475,11 @@ class SplitterElement(Element):
         self.prev_inp = None
         self.prev_outputs = [None for length in self.bitwidths_out]
 
+        # The bitwidths on output nodes of splitters are incorrect as exported
+        # from CircuitVerse; we patch them up as best we can.
+        for i, bitwidth in enumerate(self.bitwidths_out):
+            self.outputs[i].bitwidth = bitwidth
+
     def is_resolvable(self):
         if self.prev_inp != self.inp1.value:
             if self.inp1.value is None:
