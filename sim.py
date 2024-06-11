@@ -11,6 +11,10 @@ class ContentionException(Exception):
     pass
 
 
+class CircuitSubscopeException(Exception):
+    pass
+
+
 class Node:
     def __init__(
         self,
@@ -64,7 +68,7 @@ class Element:
         self.nodes = nodes
 
     @__init__.register
-    def load(self, raw_element: dict, nodes: List[Node], raw_scopes: dict):
+    def load(self, raw_element: dict, nodes: List[Node], context: dict):
         self.label = raw_element['label']
         self.delay = raw_element['propagationDelay']
         self.params = raw_element['customData']['constructorParamaters']
@@ -196,30 +200,32 @@ class Circuit:
                         q.put(n)
 
     @classmethod
-    def load_obj(cls, obj, main_scope_name):
+    def load_obj(cls, obj, main_scope_name, context=None):
+        context = context or obj['scopes']
+
         for raw_scope in obj['scopes']:
             if raw_scope['name'] == main_scope_name:
-                return cls.load(raw_scope, obj['scopes'])
+                return cls.load(raw_scope, context)
 
         raise Exception(f'Could not find scope named {main_scope_name}')
 
     @classmethod
-    def load_str(cls, string, main_scope_name, context_scopes=None):
+    def load_str(cls, string, main_scope_name, context=None):
         return cls.load_obj(
             json.loads(string),
             main_scope_name,
-            context_scopes
+            context
         )
 
     @classmethod
-    def load_file(cls, filename, main_scope_name):
+    def load_file(cls, filename, main_scope_name, context=None):
         with open(filename, 'r') as handle:
             contents = handle.read()
 
-        return cls.load_str(contents, main_scope_name)
+        return cls.load_str(contents, main_scope_name, context)
 
     @classmethod
-    def load(cls, raw_scope, raw_scopes):
+    def load(cls, raw_scope, context):
         nodes = []
         for i, raw_node in enumerate(raw_scope['allNodes']):
             nodes.append(Node.load(raw_node, index=i))
@@ -243,7 +249,7 @@ class Circuit:
                 element = impl(
                     raw_element,
                     nodes=nodes,
-                    raw_scopes=raw_scopes
+                    context=context
                 )
                 elements.append(element)
 
@@ -532,13 +538,13 @@ class SubCircuitElement(Element):
         super().__init__(inputs + outputs, **kwargs)
 
     @__init__.register
-    def load(self, raw_element: dict, nodes: List[Node], raw_scopes: dict):
-        for raw_subscope in raw_scopes:
+    def load(self, raw_element: dict, nodes: List[Node], context: dict):
+        for raw_subscope in context:
             if raw_subscope['id'] == int(raw_element['id']):
-                self.circuit = Circuit.load(raw_subscope, raw_scopes)
+                self.circuit = Circuit.load(raw_subscope, context)
                 break
         else:
-            raise Exception(
+            raise CircuitSubscopeException(
                 f'Could not find subscope '
                 f'with id {raw_element["id"]}'
             )
