@@ -200,8 +200,16 @@ class Circuit:
                         q.put(n)
 
     @classmethod
+    def load_scope_map(cls, scopes: dict):
+        ret = {}
+        for scope in scopes:
+            ret[scope['id']] = scope
+
+        return ret
+
+    @classmethod
     def load_obj(cls, obj, main_scope_name, context=None):
-        context = context or obj['scopes']
+        context = context or cls.load_scope_map(obj['scopes'])
 
         for raw_scope in obj['scopes']:
             if raw_scope['name'] == main_scope_name:
@@ -539,14 +547,12 @@ class SubCircuitElement(Element):
 
     @__init__.register
     def load(self, raw_element: dict, nodes: List[Node], context: dict):
-        for raw_subscope in context:
-            if raw_subscope['id'] == int(raw_element['id']):
-                self.circuit = Circuit.load(raw_subscope, context)
-                break
+        subcircuit_id = int(raw_element['id'])
+        if subcircuit_id in context:
+            self.circuit = Circuit.load(context[subcircuit_id], context)
         else:
             raise CircuitSubscopeException(
-                f'Could not find subscope '
-                f'with id {raw_element["id"]}'
+                f'Could not find subscope with id {subcircuit_id}'
             )
 
         self.inputs = []
