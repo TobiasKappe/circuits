@@ -204,8 +204,12 @@ class Circuit:
         raise Exception(f'Could not find scope named {main_scope_name}')
 
     @classmethod
-    def load_str(cls, string, main_scope_name):
-        return cls.load_obj(json.load(string), main_scope_name)
+    def load_str(cls, string, main_scope_name, context_scopes=None):
+        return cls.load_obj(
+            json.loads(string),
+            main_scope_name,
+            context_scopes
+        )
 
     @classmethod
     def load_file(cls, filename, main_scope_name):
