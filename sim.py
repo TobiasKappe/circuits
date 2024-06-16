@@ -544,16 +544,17 @@ class SubCircuitElement(Element):
         self.circuit = circuit
         self.inputs = inputs
         self.outputs = outputs
+        self.subcircuit_id = None
         super().__init__(inputs + outputs, **kwargs)
 
     @__init__.register
     def load(self, raw_element: dict, nodes: List[Node], context: dict):
-        subcircuit_id = int(raw_element['id'])
-        if subcircuit_id in context:
-            self.circuit = Circuit.load(context[subcircuit_id], context)
+        self.subcircuit_id = int(raw_element['id'])
+        if self.subcircuit_id in context:
+            self.circuit = Circuit.load(context[self.subcircuit_id], context)
         else:
             raise CircuitSubscopeException(
-                f'Could not find subscope with id {subcircuit_id}'
+                f'Could not find subscope with id {self.subcircuit_id}'
             )
 
         self.inputs = []
