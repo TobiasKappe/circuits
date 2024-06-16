@@ -1335,9 +1335,6 @@ class InstructionDecoderElement(Element):
             )
             yield self.constant
 
-<<<<<<< Updated upstream
-        yield self.instr
-=======
 
 @Circuit.add_impl('ALU')
 class ALUElement(Element):
@@ -1453,4 +1450,3 @@ class ALUElement(Element):
 
         yield self.carryOut
         yield self.output
->>>>>>> Stashed changes
