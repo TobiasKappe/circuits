@@ -1,6 +1,7 @@
 import json
 import queue
 
+from enum import Enum
 from functools import singledispatchmethod
 from typing import List, Union
 
@@ -1202,3 +1203,254 @@ class DigitalLedElement(Element):
     def resolve(self):
         self.state = self.inp1.value[0]
         yield from ()
+
+
+InstructionType = Enum(
+    'InstructionType',
+    ['R_TYPE', 'I_TYPE', 'S_TYPE', 'B_TYPE']
+)
+
+
+@Circuit.add_impl('InstructionDecoder')
+class InstructionDecoderElement(Element):
+    @singledispatchmethod
+    def __init__(
+        self,
+        instr: Node,
+        addi: Node,
+        add: Node,
+        lw: Node,
+        sw: Node,
+        blt: Node,
+        rd: Node,
+        rs1: Node,
+        rs2: Node,
+        constant: Node,
+        **kwargs,
+    ):
+        self.instr = instr
+        self.addi = addi
+        self.add = add
+        self.lw = lw
+        self.sw = sw
+        self.blt = blt
+        self.rd = rd
+        self.rs1 = rs1
+        self.rs2 = rs2
+        self.constant = constant
+
+        super().__init__(
+            [
+                self.instr,
+                self.addi,
+                self.add,
+                self.lw,
+                self.sw,
+                self.blt,
+                self.rd,
+                self.rs1,
+                self.rs2,
+                self.constant,
+            ],
+            **kwargs
+        )
+
+    @__init__.register
+    def load(self, raw_element: dict, **kwargs):
+        super().__init__(raw_element, **kwargs)
+
+    def is_resolvable(self):
+        if self.instr.value is None:
+            return False
+        if None in self.instr.value:
+            return False
+
+        return True
+
+    def resolve(self):
+        opcode = self.instr.value[:7]
+
+        instr_type = InstructionType.R_TYPE
+
+        self.addi.value = [False]
+        self.add.value = [False]
+        self.lw.value = [False]
+        self.sw.value = [False]
+        self.blt.value = [False]
+
+        if opcode == [True, True, False, False, True, False, False]:
+            self.addi.value = [True]
+            instr_type = InstructionType.I_TYPE
+
+        if opcode == [True, True, False, False, True, True, False]:
+            self.add.value = [True]
+            instr_type = InstructionType.R_TYPE
+
+        if opcode == [True, True, False, False, False, False, False]:
+            self.lw.value = [True]
+            instr_type = InstructionType.I_TYPE
+
+        if opcode == [True, True, False, False, False, True, False]:
+            self.sw.value = [True]
+            instr_type = InstructionType.S_TYPE
+
+        if opcode == [True, True, False, False, False, True, True]:
+            self.blt.value = [True]
+            instr_type = InstructionType.B_TYPE
+
+        yield self.addi
+        yield self.add
+        yield self.lw
+        yield self.sw
+        yield self.blt
+
+        self.rd.value = self.instr.value[7:12]
+        self.rs1.value = self.instr.value[15:20]
+        self.rs2.value = self.instr.value[20:25]
+
+        yield self.rd
+        yield self.rs1
+        yield self.rs2
+
+        if instr_type == InstructionType.I_TYPE:
+            self.constant.value = (
+                self.instr.value[20:32] +
+                [self.instr.value[31]] * 20
+            )
+            yield self.constant
+        elif instr_type == InstructionType.S_TYPE:
+            self.constant.value = (
+                self.instr.value[7:12] +
+                self.instr.value[25:32] +
+                [self.instr.value[31]] * 20
+            )
+            yield self.constant
+        elif instr_type == InstructionType.B_TYPE:
+            self.constant.value = (
+                [False] +
+                self.instr.value[8:12] +
+                self.instr.value[25:31] +
+                self.instr.value[7:8] +
+                [self.instr.value[31]] * 20
+            )
+            yield self.constant
+
+<<<<<<< Updated upstream
+        yield self.instr
+=======
+
+@Circuit.add_impl('ALU')
+class ALUElement(Element):
+    @singledispatchmethod
+    def __init__(
+        self,
+        inp1: Node,
+        inp2: Node,
+        controlSignalInput: Node,
+        carryOut: Node,
+        output: Node,
+        **kwargs,
+    ):
+        self.inp1 = inp1
+        self.inp2 = inp2
+        self.controlSignalInput = controlSignalInput
+        self.carryOut = carryOut
+        self.output = output
+
+        super().__init__(
+            [
+                self.inp1,
+                self.inp2,
+                self.controlSignalInput,
+                self.carryOut,
+                self.output,
+            ],
+            **kwargs
+        )
+
+    @__init__.register
+    def load(self, raw_element: dict, **kwargs):
+        super().__init__(raw_element, **kwargs)
+        self.bitwidth = self.params[1]
+
+    def is_resolvable(self):
+        if self.inp1.value is None or None in self.inp1.value:
+            return False
+        if self.inp2.value is None or None in self.inp2.value:
+            return False
+        if self.controlSignalInput.value is None or \
+           None in self.controlSignalInput.value:
+            return False
+
+        # Undefined control value does not seem to change any output
+        if self.controlSignalInput.value == [True, True, False]:
+            return False
+
+        return True
+
+    def half_add(self, x, y):
+        return x != y, x and y
+
+    def full_add(self, left, right):
+        carry = False
+        outcomes = []
+
+        for i in range(self.bitwidth):
+            tmp_sum, carry_left = self.half_add(left[i], carry)
+            outcome, carry_right = self.half_add(right[i], tmp_sum)
+            carry = carry_left or carry_right
+            outcomes.append(outcome)
+
+        return outcomes, carry
+
+    def twos_complement(self, bits):
+        complemented, _ = self.full_add(
+            [not b for b in bits],
+            [True] + [False] * (self.bitwidth - 1)
+        )
+        return complemented
+
+    def full_sub(self, left, right):
+        return self.full_add(left, self.twos_complement(right))
+
+    def resolve(self):
+        if self.controlSignalInput.value == [False, False, False]:
+            self.carryOut.value = [False]
+            self.output.value = [
+                self.inp1.value[i] and self.inp2.value[i]
+                for i in range(self.bitwidth)
+            ]
+        elif self.controlSignalInput.value == [True, False, False]:
+            self.carryOut.value = [False]
+            self.output.value = [
+                self.inp1.value[i] or self.inp2.value[i]
+                for i in range(self.bitwidth)
+            ]
+        elif self.controlSignalInput.value == [False, True, False]:
+            self.output.value, carry = \
+                self.full_add(self.inp1.value, self.inp2.value)
+            self.carryOut.value = [carry]
+        elif self.controlSignalInput.value == [False, False, True]:
+            self.carryOut.value = [False]
+            self.output.value = [
+                self.inp1.value[i] and not self.inp2.value[i]
+                for i in range(self.bitwidth)
+            ]
+        elif self.controlSignalInput.value == [True, False, True]:
+            self.carryOut.value = [False]
+            self.output.value = [
+                self.inp1.value[i] or not self.inp2.value[i]
+                for i in range(self.bitwidth)
+            ]
+        elif self.controlSignalInput.value == [False, True, True]:
+            self.carryOut.value = [False]
+            self.output.value, _ = \
+                self.full_sub(self.inp1.value, self.inp2.value)
+        elif self.controlSignalInput.value == [True, True, True]:
+            self.carryOut.value = [False]
+            outcome, _ = self.full_sub(self.inp1.value, self.inp2.value)
+            self.output.value = [outcome[-1]] + [False] * (self.bitwidth - 1)
+
+        yield self.carryOut
+        yield self.output
+>>>>>>> Stashed changes
