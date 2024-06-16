@@ -136,6 +136,33 @@ class OutputElement(Element):
         yield from ()
 
 
+class MockElement(Element):
+    fields = None
+
+    def __init__(self, *args, **kwargs):
+        nodes = []
+        for _, field, bitwidth in self.fields:
+            node = Node(bitwidth=bitwidth)
+            setattr(self, field, node)
+            nodes.append(node)
+
+        index = 0
+        for is_output, field, _ in self.fields:
+            if is_output:
+                getattr(self, field).value = args[index]
+                index += 1
+
+        super().__init__(nodes, **kwargs)
+
+    def is_resolvable(self):
+        return True
+
+    def resolve(self):
+        for is_output, field, _ in self.fields:
+            if is_output:
+                yield getattr(self, field)
+
+
 class Circuit:
     IMPL_MAP = {
         'Input': InputElement,
@@ -276,6 +303,24 @@ class Circuit:
         for element in self.elements:
             if node in element.nodes:
                 return element
+
+    def mock(self, replacee, replacement: MockElement):
+        for i in range(len(self.elements)):
+            if self.elements[i] is replacee:
+                self.elements[i] = replacement
+
+        self.nodes += replacement.nodes
+        for node in replacee.nodes:
+            self.nodes.remove(node)
+
+        for _, field, _ in replacement.fields:
+            replacee_node = getattr(replacee, field)
+            replacement_node = getattr(replacement, field)
+            for neighbor in replacee_node.connections:
+                neighbor.connections.remove(replacee_node)
+                neighbor.connections.append(replacement_node)
+
+            replacement_node.connections = replacee_node.connections
 
 
 class CombinatorialElement(Element):
