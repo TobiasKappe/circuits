@@ -1026,8 +1026,8 @@ class RAMElement(Element):
     def load(self, raw_element: dict, **kwargs):
         super().__init__(raw_element, **kwargs)
         self.values = [
-            RiscInteger(v)
-            for v in raw_element['customData']['constructorParamaters']
+            RiscInteger(v, signed=False)
+            for v in raw_element['customData']['constructorParamaters'][0]
         ]
         self.prev_clock = None
         self.validate()
@@ -1102,8 +1102,8 @@ class RegisterFileElement(Element):
     def load(self, raw_element: dict, **kwargs):
         super().__init__(raw_element, **kwargs)
         self.values = [
-            RiscInteger(v)
-            for v in raw_element['customData']['constructorParamaters']
+            RiscInteger(v, signed=False)
+            for v in raw_element['customData']['constructorParamaters'][0]
         ]
         self.prev_clock = None
         self.validate()
