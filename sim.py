@@ -1134,16 +1134,16 @@ class RegisterFileElement(Element):
            self.en.value is not None and \
            self.en.value[0] is True and \
            any(self.R3.value):
-            addr = RiscInteger(self.R3.value)
+            addr = RiscInteger(self.R3.value + [False] * 27)
             self.values[addr.to_int()] = RiscInteger(self.dataIn.value)
 
         if self.R1.value is not None:
-            addr = RiscInteger(self.R1.value)
+            addr = RiscInteger(self.R1.value + [False] * 27)
             self.dataOut1.value = self.values[addr.to_int()].bits
             yield self.dataOut1
 
         if self.R2.value is not None:
-            addr = RiscInteger(self.R2.value)
+            addr = RiscInteger(self.R2.value + [False] * 27)
             self.dataOut2.value = self.values[addr.to_int()].bits
             yield self.dataOut2
 

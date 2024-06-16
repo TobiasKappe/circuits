@@ -50,7 +50,7 @@ class TestRegisterFileElement:
         assert dataOut[index].value is None
 
         # A defined input address yields a defined output.
-        R[index].value = [True, False]*2 + [False]*28
+        R[index].value = [True, False]*2 + [False]
         nodes = list(rf.resolve())
         assert nodes == [dataOut[index]]
         assert dataOut[index].value == RiscInteger(5).bits
@@ -92,7 +92,7 @@ class TestRegisterFileElement:
 
         # Defined data on a defined address with enable low does nothing
         dataIn.value = [True, False]*16
-        R[2].value = [False, True]*2 + [False]*28
+        R[2].value = [False, True]*2 + [False]
         clock.value = [False]
         en.value = [False]
         nodes = list(rf.resolve())
@@ -107,7 +107,7 @@ class TestRegisterFileElement:
         # Offering defined data on a defined address with enable high writes
         # that data to the values at that address
         dataIn.value = [True, False]*16
-        R[2].value = [False, True]*2 + [False]*28
+        R[2].value = [False, True]*2 + [False]
         clock.value = [False]
         en.value = [True]
         nodes = list(rf.resolve())
