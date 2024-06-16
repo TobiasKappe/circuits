@@ -222,7 +222,7 @@ class Circuit:
                             raise ContentionException(
                                 f'Node {n.index} is receiving a value from '
                                 'something other than its attached element '
-                                f'(of type {type(element)}).'
+                                f'(of type {type(element).__name__}).'
                             )
 
                         q.put(n)
