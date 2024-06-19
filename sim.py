@@ -326,6 +326,14 @@ class Circuit:
 
             replacement_node.connections = replacee_node.connections
 
+    def find_element(self, cls, check=None):
+        for element in self.elements:
+            if not isinstance(element, cls):
+                continue
+
+            if check is None or check(element):
+                return element
+
 
 class CombinatorialElement(Element):
     @singledispatchmethod
