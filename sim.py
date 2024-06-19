@@ -137,20 +137,25 @@ class OutputElement(Element):
 
 
 class MockElement(Element):
-    fields = None
+    inputs = None
+    outputs = None
 
-    def __init__(self, *args, **kwargs):
+    @property
+    def fields(self):
+        return self.inputs | self.outputs
+
+    def __init__(self, **kwargs):
         nodes = []
-        for _, field, bitwidth in self.fields:
+        for field, bitwidth in self.fields.items():
             node = Node(bitwidth=bitwidth)
             setattr(self, field, node)
             nodes.append(node)
 
-        index = 0
-        for is_output, field, _ in self.fields:
-            if is_output:
-                getattr(self, field).value = args[index]
-                index += 1
+        for field, bitwidth in self.outputs.items():
+            if field in kwargs:
+                getattr(self, field).value = kwargs[field]
+            else:
+                getattr(self, field).value = [False] * bitwidth
 
         super().__init__(nodes, **kwargs)
 
@@ -158,9 +163,8 @@ class MockElement(Element):
         return True
 
     def resolve(self):
-        for is_output, field, _ in self.fields:
-            if is_output:
-                yield getattr(self, field)
+        for field in self.outputs:
+            yield getattr(self, field)
 
 
 class Circuit:
@@ -313,7 +317,7 @@ class Circuit:
         for node in replacee.nodes:
             self.nodes.remove(node)
 
-        for _, field, _ in replacement.fields:
+        for field in replacement.fields:
             replacee_node = getattr(replacee, field)
             replacement_node = getattr(replacement, field)
             for neighbor in replacee_node.connections:
