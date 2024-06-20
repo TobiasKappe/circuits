@@ -977,6 +977,7 @@ class ProgramCounterElement(Element):
     def load(self, raw_element: dict, **kwargs):
         super().__init__(raw_element, **kwargs)
         self.value = RiscInteger(0)
+        self.prev_clock = None
         self.validate()
 
     def validate(self):
