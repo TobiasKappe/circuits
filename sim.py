@@ -370,8 +370,13 @@ class CombinatorialElement(Element):
                 return True
         return False
 
-    def is_resolvable_per_bit(self):
-        raise NotImplementedError
+    def is_resolvable_per_bit(self, i):
+        for inp in self.inp:
+            if inp.value is not None and \
+               i < len(inp.value) and \
+               inp.value[i] is not None:
+                return True
+        return False
 
     def resolve(self):
         result = []
@@ -387,96 +392,44 @@ class CombinatorialElement(Element):
 
 @Circuit.add_impl('AndGate')
 class AndGateElement(CombinatorialElement):
-    def is_resolvable_per_bit(self, i):
-        for inp in self.inp:
-            if inp.value is not None and \
-             i < len(inp.value) and \
-             inp.value[i] is False:
-                return True
-        for inp in self.inp:
-            if inp.value is None or \
-             i >= len(inp.value) or \
-             inp.value[i] is None:
-                return False
-        return True
-
     def resolve_per_bit(self, i):
         for inp in self.inp:
             if inp.value is not None and \
-             i < len(inp.value) and \
-             inp.value[i] is False:
+               i < len(inp.value) and \
+               inp.value[i] is False:
                 return False
         return True
 
 
 @Circuit.add_impl('NorGate')
 class NorGateElement(CombinatorialElement):
-    def is_resolvable_per_bit(self, i):
-        for inp in self.inp:
-            if inp.value is not None and \
-             i < len(inp.value) and \
-             inp.value[i] is True:
-                return True
-        for inp in self.inp:
-            if inp.value is None or \
-             i >= len(inp.value) or \
-             inp.value[i] is None:
-                return False
-        return True
-
     def resolve_per_bit(self, i):
         for inp in self.inp:
             if inp.value is not None and \
-             i < len(inp.value) and \
-             inp.value[i] is True:
+               i < len(inp.value) and \
+               inp.value[i] is True:
                 return False
         return True
 
 
 @Circuit.add_impl('OrGate')
 class OrGateElement(CombinatorialElement):
-    def is_resolvable_per_bit(self, i):
-        for inp in self.inp:
-            if inp.value is not None and \
-             i < len(inp.value) and \
-             inp.value[i] is True:
-                return True
-        for inp in self.inp:
-            if inp.value is None or \
-             i >= len(inp.value) or \
-             inp.value[i] is None:
-                return False
-        return True
-
     def resolve_per_bit(self, i):
         for inp in self.inp:
-            if inp.value is not None \
-             and i < len(inp.value) and \
-             inp.value[i] is True:
+            if inp.value is not None and \
+               i < len(inp.value) and \
+               inp.value[i] is True:
                 return True
         return False
 
 
 @Circuit.add_impl('NandGate')
 class NandGateElement(CombinatorialElement):
-    def is_resolvable_per_bit(self, i):
-        for inp in self.inp:
-            if inp.value is not None \
-             and i < len(inp.value) and \
-             inp.value[i] is True:
-                return True
-        for inp in self.inp:
-            if inp.value is None or \
-             i >= len(inp.value) or \
-             inp.value[i] is None:
-                return False
-        return True
-
     def resolve_per_bit(self, i):
         for inp in self.inp:
-            if inp.value is not None \
-             and i < len(inp.value) and \
-             inp.value[i] is True:
+            if inp.value is not None and \
+               i < len(inp.value) and \
+               inp.value[i] is True:
                 return False
         return True
 
@@ -484,16 +437,11 @@ class NandGateElement(CombinatorialElement):
 class ParityGateElement(CombinatorialElement):
     start_parity = None
 
-    def is_resolvable_per_bit(self, i):
-        for inp in self.inp:
-            if inp.value is None or inp.value[i] is None:
-                return False
-        return True
-
     def resolve_per_bit(self, i):
         parity = self.start_parity
         for inp in self.inp:
-            if inp.value[i] is True:
+            if inp.value is not None and \
+               inp.value[i] is True:
                 parity = not parity
         return parity
 
