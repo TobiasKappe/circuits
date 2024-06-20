@@ -1403,8 +1403,35 @@ class InstructionDecoderElement(Element):
             yield self.constant
 
 
+class BitArithmeticElement(Element):
+    def half_add(self, x, y):
+        return x != y, x and y
+
+    def full_add(self, left, right, carry=False):
+        carry = False
+        outcomes = []
+
+        for i in range(self.bitwidth):
+            tmp_sum, carry_left = self.half_add(left[i], carry)
+            outcome, carry_right = self.half_add(right[i], tmp_sum)
+            carry = carry_left or carry_right
+            outcomes.append(outcome)
+
+        return outcomes, carry
+
+    def twos_complement(self, bits):
+        complemented, _ = self.full_add(
+            [not b for b in bits],
+            [True] + [False] * (self.bitwidth - 1)
+        )
+        return complemented
+
+    def full_sub(self, left, right):
+        return self.full_add(left, self.twos_complement(right))
+
+
 @Circuit.add_impl('ALU')
-class ALUElement(Element):
+class ALUElement(BitArithmeticElement):
     @singledispatchmethod
     def __init__(
         self,
@@ -1452,31 +1479,6 @@ class ALUElement(Element):
 
         return True
 
-    def half_add(self, x, y):
-        return x != y, x and y
-
-    def full_add(self, left, right):
-        carry = False
-        outcomes = []
-
-        for i in range(self.bitwidth):
-            tmp_sum, carry_left = self.half_add(left[i], carry)
-            outcome, carry_right = self.half_add(right[i], tmp_sum)
-            carry = carry_left or carry_right
-            outcomes.append(outcome)
-
-        return outcomes, carry
-
-    def twos_complement(self, bits):
-        complemented, _ = self.full_add(
-            [not b for b in bits],
-            [True] + [False] * (self.bitwidth - 1)
-        )
-        return complemented
-
-    def full_sub(self, left, right):
-        return self.full_add(left, self.twos_complement(right))
-
     def resolve(self):
         if self.controlSignalInput.value == [False, False, False]:
             self.carryOut.value = [False]
@@ -1517,3 +1519,62 @@ class ALUElement(Element):
 
         yield self.carryOut
         yield self.output
+
+
+@Circuit.add_impl('Adder')
+class AdderElement(BitArithmeticElement):
+    @singledispatchmethod
+    def __init__(
+        self,
+        inpA: Node,
+        inpB: Node,
+        carryIn: Node,
+        carryOut: Node,
+        sum: Node,
+        **kwargs,
+    ):
+        self.inpA = inpA
+        self.inpB = inpB
+        self.carryIn = carryIn
+        self.carryOut = carryOut
+        self.sum = sum
+
+        super().__init__(
+            [
+                self.inpA,
+                self.inpB,
+                self.carryIn,
+                self.carryOut,
+                self.sum,
+            ],
+            **kwargs
+        )
+
+    @__init__.register
+    def load(self, raw_element: dict, **kwargs):
+        super().__init__(raw_element, **kwargs)
+        self.bitwidth = self.params[1]
+
+    def is_resolvable(self):
+        if self.inpA.value is None or None in self.inpA.value:
+            return False
+        if self.inpB.value is None or None in self.inpB.value:
+            return False
+
+        return True
+
+    def resolve(self):
+        if self.carryIn.value is None or self.carryIn.value[0] is None:
+            carry = False
+        else:
+            carry = self.carryIn.value[0]
+
+        self.sum.value, carry = self.sum.value = self.full_add(
+            self.inpA.value,
+            self.inpB.value,
+            carry
+        )
+        self.carryOut.value = [carry]
+
+        yield self.carryOut
+        yield self.sum
