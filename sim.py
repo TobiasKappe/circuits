@@ -16,6 +16,10 @@ class CircuitSubscopeException(Exception):
     pass
 
 
+class CircuitUnstableException(Exception):
+    pass
+
+
 class Node:
     def __init__(
         self,
@@ -181,6 +185,7 @@ class Circuit:
         'Input': InputElement,
         'Output': OutputElement,
     }
+    MAX_ITERATIONS = 1000000
 
     def __init__(self, elements: List[Element], nodes: List[Node]):
         self.elements = elements
@@ -222,6 +227,7 @@ class Circuit:
                 for n in element.resolve():
                     q.put(n)
 
+        iterations = 0
         while not q.empty():
             node = q.get()
             changed = set(node.propagate(set()))
@@ -239,6 +245,13 @@ class Circuit:
                             )
 
                         q.put(n)
+
+            iterations += 1
+            if iterations > self.MAX_ITERATIONS:
+                raise CircuitUnstableException(
+                    f'Circuit unstable after {self.MAX_ITERATIONS} '
+                    f'iterations; is there a circular dependency?'
+                )
 
     @classmethod
     def load_scope_map(cls, scopes: dict):
