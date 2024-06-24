@@ -1463,8 +1463,16 @@ class ALUElement(BitArithmeticElement):
                 self.full_sub(self.inp1.value, self.inp2.value)
         elif self.controlSignalInput.value == [True, True, True]:
             self.carryOut.value = [False]
-            outcome, _ = self.full_sub(self.inp1.value, self.inp2.value)
-            self.output.value = [outcome[-1]] + [False] * (self.bitwidth - 1)
+            sign1 = self.inp1.value[-1]
+            sign2 = self.inp2.value[-1]
+            if sign1 < sign2:
+                outcome = False
+            elif sign2 < sign1:
+                outcome = True
+            else:
+                sub, _ = self.full_sub(self.inp1.value, self.inp2.value)
+                outcome = sub[-1]
+            self.output.value = [outcome] + [False] * (self.bitwidth - 1)
 
         yield self.carryOut
         yield self.output
