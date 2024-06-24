@@ -1518,7 +1518,7 @@ class AdderElement(BitArithmeticElement):
         else:
             carry = self.carryIn.value[0]
 
-        self.sum.value, carry = self.sum.value = self.full_add(
+        self.sum.value, carry = self.full_add(
             self.inpA.value,
             self.inpB.value,
             carry
