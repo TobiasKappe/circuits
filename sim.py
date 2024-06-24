@@ -1131,7 +1131,7 @@ class RegisterFileElement(Element):
     def load(self, raw_element: dict, **kwargs):
         super().__init__(raw_element, **kwargs)
         self.values = [
-            RiscInteger(v, signed=False)
+            RiscInteger(v, signed=False) if v >= 0 else RiscInteger(v)
             for v in raw_element['customData']['constructorParamaters'][0]
         ]
         self.prev_clock = None
