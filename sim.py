@@ -1642,3 +1642,8 @@ class TriStateElement(Element):
     def resolve(self):
         self.output1.value = self.inp1.value
         yield self.output1
+
+
+@Circuit.add_impl('Button')
+class ButtonElement(InputElement):
+    pass
