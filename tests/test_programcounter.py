@@ -1,7 +1,8 @@
 import pytest
 
+from riscv.data import RiscInteger
+
 from ouca.circuits import sim
-from ouca.riscv.data import RiscInteger
 
 
 class TestProgramCounterElement:

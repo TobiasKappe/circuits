@@ -5,7 +5,7 @@ from enum import Enum
 from functools import singledispatchmethod
 from typing import List, Union
 
-from ouca.riscv.data import RiscInteger
+from riscv.data import RiscInteger
 
 
 class ContentionException(Exception):
