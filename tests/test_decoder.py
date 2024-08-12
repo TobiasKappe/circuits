@@ -1,6 +1,7 @@
-from ouca.circuits import sim
-
 import pytest
+
+from ouca.circuits import Node
+from ouca.circuits.coder import DecoderElement
 
 
 class TestDecoder:
@@ -19,9 +20,9 @@ class TestDecoder:
         input_vals,
         resolvable,
     ):
-        input = sim.Node()
-        outputs = [sim.Node() for _ in range(2**signal_size)]
-        element = sim.DecoderElement(signal_size, input, outputs)
+        input = Node()
+        outputs = [Node() for _ in range(2**signal_size)]
+        element = DecoderElement(signal_size, input, outputs)
 
         input.value = input_vals
 
@@ -44,9 +45,9 @@ class TestDecoder:
         input_vals,
         output_vals,
     ):
-        input = sim.Node()
-        outputs = [sim.Node() for _ in range(2**signal_size)]
-        element = sim.DecoderElement(signal_size, input, outputs)
+        input = Node()
+        outputs = [Node() for _ in range(2**signal_size)]
+        element = DecoderElement(signal_size, input, outputs)
 
         input.value = input_vals
 

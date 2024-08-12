@@ -1,6 +1,7 @@
-from ouca.circuits import sim
-
 import pytest
+
+from ouca.circuits import Node
+from ouca.circuits.mux import MultiplexerElement
 
 
 class TestMultiplexer:
@@ -19,10 +20,10 @@ class TestMultiplexer:
         input_vals,
         resolvable,
     ):
-        control = sim.Node()
-        inputs = [sim.Node() for _ in range(2**signal_size)]
-        output = sim.Node()
-        element = sim.MultiplexerElement(signal_size, control, inputs, output)
+        control = Node()
+        inputs = [Node() for _ in range(2**signal_size)]
+        output = Node()
+        element = MultiplexerElement(signal_size, control, inputs, output)
 
         control.value = signal_val
         for i in range(2**signal_size):
@@ -45,10 +46,10 @@ class TestMultiplexer:
         input_vals,
         output_val,
     ):
-        control = sim.Node()
-        inputs = [sim.Node() for _ in range(2**signal_size)]
-        output = sim.Node()
-        element = sim.MultiplexerElement(signal_size, control, inputs, output)
+        control = Node()
+        inputs = [Node() for _ in range(2**signal_size)]
+        output = Node()
+        element = MultiplexerElement(signal_size, control, inputs, output)
 
         control.value = signal_val
         for i in range(2**signal_size):

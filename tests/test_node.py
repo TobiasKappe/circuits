@@ -1,12 +1,13 @@
-from ouca.circuits import sim
-
 import pytest
+
+from ouca.circuits import Node
+from ouca.circuits.exceptions import ContentionException
 
 
 class TestNode:
     def test_copy(self):
-        first = sim.Node([True])
-        second = sim.Node([first])
+        first = Node([True])
+        second = Node([first])
         first.connections.append(second)
 
         changed = set(first.propagate(set()))
@@ -16,9 +17,9 @@ class TestNode:
         assert second.upstream is first
 
     def test_transitive(self):
-        first = sim.Node([True])
-        second = sim.Node(connections=[first])
-        third = sim.Node(connections=[second])
+        first = Node([True])
+        second = Node(connections=[first])
+        third = Node(connections=[second])
         first.connections.append(second)
         second.connections.append(third)
 
@@ -31,9 +32,9 @@ class TestNode:
         assert third.upstream is second
 
     def test_fork(self):
-        first = sim.Node([True])
-        second = sim.Node(connections=[first])
-        third = sim.Node(connections=[first])
+        first = Node([True])
+        second = Node(connections=[first])
+        third = Node(connections=[first])
         first.connections.append(second)
         first.connections.append(third)
 
@@ -46,9 +47,9 @@ class TestNode:
         assert third.upstream is first
 
     def test_contention(self):
-        first = sim.Node([True])
-        second = sim.Node()
-        third = sim.Node(connections=[first, second])
+        first = Node([True])
+        second = Node()
+        third = Node(connections=[first, second])
         first.connections.append(third)
         second.connections.append(third)
 
@@ -62,5 +63,5 @@ class TestNode:
         assert third.upstream is first
 
         second.value = False
-        with pytest.raises(sim.ContentionException):
+        with pytest.raises(ContentionException):
             changed = list(second.propagate(set()))

@@ -2,18 +2,19 @@ import pytest
 
 from riscv.data import RiscInteger
 
-from ouca.circuits import sim
+from ouca.circuits import Node
+from ouca.circuits.ram import RAMElement
 
 
 class TestRAMElement:
     def test_is_resolvable(self):
-        clock = sim.Node()
-        dataIn = sim.Node(bitwidth=32)
-        dataOut = [sim.Node(bitwidth=32), sim.Node(bitwidth=32)]
-        en = sim.Node()
-        memAddr = [sim.Node(bitwidth=32), sim.Node(bitwidth=32)]
+        clock = Node()
+        dataIn = Node(bitwidth=32)
+        dataOut = [Node(bitwidth=32), Node(bitwidth=32)]
+        en = Node()
+        memAddr = [Node(bitwidth=32), Node(bitwidth=32)]
 
-        ram = sim.RAMElement(
+        ram = RAMElement(
             clock,
             dataIn,
             dataOut[0],
@@ -26,13 +27,13 @@ class TestRAMElement:
 
     @pytest.mark.parametrize('index', [0, 1])
     def test_read(self, index):
-        clock = sim.Node()
-        dataIn = sim.Node(bitwidth=32)
-        dataOut = [sim.Node(bitwidth=32), sim.Node(bitwidth=32)]
-        en = sim.Node()
-        memAddr = [sim.Node(bitwidth=32), sim.Node(bitwidth=32)]
+        clock = Node()
+        dataIn = Node(bitwidth=32)
+        dataOut = [Node(bitwidth=32), Node(bitwidth=32)]
+        en = Node()
+        memAddr = [Node(bitwidth=32), Node(bitwidth=32)]
 
-        ram = sim.RAMElement(
+        ram = RAMElement(
             clock,
             dataIn,
             dataOut[0],
@@ -55,13 +56,13 @@ class TestRAMElement:
         assert dataOut[index].value == RiscInteger(5).bits
 
     def test_write(self):
-        clock = sim.Node()
-        dataIn = sim.Node(bitwidth=32)
-        dataOut = [sim.Node(bitwidth=32), sim.Node(bitwidth=32)]
-        en = sim.Node()
-        memAddr = [sim.Node(bitwidth=32), sim.Node(bitwidth=32)]
+        clock = Node()
+        dataIn = Node(bitwidth=32)
+        dataOut = [Node(bitwidth=32), Node(bitwidth=32)]
+        en = Node()
+        memAddr = [Node(bitwidth=32), Node(bitwidth=32)]
 
-        ram = sim.RAMElement(
+        ram = RAMElement(
             clock,
             dataIn,
             dataOut[0],

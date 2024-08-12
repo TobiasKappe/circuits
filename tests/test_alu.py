@@ -1,6 +1,7 @@
-from ouca.circuits import sim
-
 import pytest
+
+from ouca.circuits import Node
+from ouca.circuits.calculate import ALUElement
 
 
 class TestALU:
@@ -24,12 +25,12 @@ class TestALU:
         controlSignalInput,
         resolvable,
     ):
-        element = sim.ALUElement(
-            sim.Node(bitwidth=bitwidth),
-            sim.Node(bitwidth=bitwidth),
-            sim.Node(bitwidth=3),
-            sim.Node(bitwidth=bitwidth),
-            sim.Node(),
+        element = ALUElement(
+            Node(bitwidth=bitwidth),
+            Node(bitwidth=bitwidth),
+            Node(bitwidth=3),
+            Node(bitwidth=bitwidth),
+            Node(),
             bitwidth=bitwidth,
         )
 
@@ -141,12 +142,12 @@ class TestALU:
         carryOut,
         output,
     ):
-        element = sim.ALUElement(
-            sim.Node(bitwidth=bitwidth),
-            sim.Node(bitwidth=bitwidth),
-            sim.Node(bitwidth=3),
-            sim.Node(bitwidth=bitwidth),
-            sim.Node(),
+        element = ALUElement(
+            Node(bitwidth=bitwidth),
+            Node(bitwidth=bitwidth),
+            Node(bitwidth=3),
+            Node(bitwidth=bitwidth),
+            Node(),
             bitwidth=bitwidth,
         )
 

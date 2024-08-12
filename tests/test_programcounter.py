@@ -2,28 +2,29 @@ import pytest
 
 from riscv.data import RiscInteger
 
-from ouca.circuits import sim
+from ouca.circuits import Node
+from ouca.circuits.pc import ProgramCounterElement
 
 
 class TestProgramCounterElement:
     def test_is_resolvable(self):
-        dist = sim.Node(bitwidth=32)
-        jump = sim.Node()
-        reset = sim.Node()
-        ctr = sim.Node(bitwidth=32)
-        clock = sim.Node()
+        dist = Node(bitwidth=32)
+        jump = Node()
+        reset = Node()
+        ctr = Node(bitwidth=32)
+        clock = Node()
 
-        counter = sim.ProgramCounterElement(dist, jump, reset, ctr, clock)
+        counter = ProgramCounterElement(dist, jump, reset, ctr, clock)
         assert counter.is_resolvable()
 
     def test_reset(self):
-        dist = sim.Node(bitwidth=32)
-        jump = sim.Node()
-        reset = sim.Node()
-        ctr = sim.Node(bitwidth=32)
-        clock = sim.Node()
+        dist = Node(bitwidth=32)
+        jump = Node()
+        reset = Node()
+        ctr = Node(bitwidth=32)
+        clock = Node()
 
-        counter = sim.ProgramCounterElement(dist, jump, reset, ctr, clock)
+        counter = ProgramCounterElement(dist, jump, reset, ctr, clock)
         counter.value = RiscInteger(0x123)
 
         # If reset is high, the value becomes zero.
@@ -61,13 +62,13 @@ class TestProgramCounterElement:
         ]
     )
     def test_increment(self, jump_value):
-        dist = sim.Node(bitwidth=32)
-        jump = sim.Node(jump_value)
-        reset = sim.Node()
-        ctr = sim.Node(bitwidth=32)
-        clock = sim.Node()
+        dist = Node(bitwidth=32)
+        jump = Node(jump_value)
+        reset = Node()
+        ctr = Node(bitwidth=32)
+        clock = Node()
 
-        counter = sim.ProgramCounterElement(dist, jump, reset, ctr, clock)
+        counter = ProgramCounterElement(dist, jump, reset, ctr, clock)
         assert counter.value == RiscInteger(0)
 
         # Start with a low clock; no change to the value
@@ -92,13 +93,13 @@ class TestProgramCounterElement:
         assert ctr.value == [False, False, True] + [False]*29
 
     def test_jump(self):
-        dist = sim.Node(bitwidth=32)
-        jump = sim.Node()
-        reset = sim.Node()
-        ctr = sim.Node(bitwidth=32)
-        clock = sim.Node()
+        dist = Node(bitwidth=32)
+        jump = Node()
+        reset = Node()
+        ctr = Node(bitwidth=32)
+        clock = Node()
 
-        counter = sim.ProgramCounterElement(dist, jump, reset, ctr, clock)
+        counter = ProgramCounterElement(dist, jump, reset, ctr, clock)
         counter.value = RiscInteger(0x10)
 
         # A raised clock edge with an undefined value for dist does not

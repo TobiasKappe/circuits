@@ -1,94 +1,97 @@
-from ouca.circuits import sim
-
 import pytest
+
+from ouca.circuits import Node
+from ouca.circuits.logic import \
+    CombinatorialElement, AndGateElement, NorGateElement, OrGateElement, \
+    NandGateElement, XorGateElement, XnorGateElement
 
 
 class TestCombinatorialElement:
     @pytest.mark.parametrize(
         'cls, inputs, resolvable',
         [
-            [sim.CombinatorialElement, [None, None], False],
-            [sim.CombinatorialElement, [True, None], True],
-            [sim.CombinatorialElement, [None, True], True],
-            [sim.CombinatorialElement, [False, None], True],
-            [sim.CombinatorialElement, [None, False], True],
-            [sim.CombinatorialElement, [True, True], True],
-            [sim.CombinatorialElement, [None, None, False], True],
+            [CombinatorialElement, [None, None], False],
+            [CombinatorialElement, [True, None], True],
+            [CombinatorialElement, [None, True], True],
+            [CombinatorialElement, [False, None], True],
+            [CombinatorialElement, [None, False], True],
+            [CombinatorialElement, [True, True], True],
+            [CombinatorialElement, [None, None, False], True],
         ]
     )
     def test_is_resolvable(self, cls, inputs, resolvable):
-        input_nodes = [sim.Node(value=[i]) for i in inputs]
-        output_node = sim.Node()
+        input_nodes = [Node(value=[i]) for i in inputs]
+        output_node = Node()
         element = cls(input_nodes, output_node)
         assert element.is_resolvable() is resolvable
 
     @pytest.mark.parametrize(
         'cls, inputs, result',
         [
-            [sim.AndGateElement, [None, False], False],
-            [sim.AndGateElement, [False, None], False],
-            [sim.AndGateElement, [False, False], False],
-            [sim.AndGateElement, [None, True], True],
-            [sim.AndGateElement, [True, None], True],
-            [sim.AndGateElement, [False, True], False],
-            [sim.AndGateElement, [True, False], False],
-            [sim.AndGateElement, [True, True], True],
+            [AndGateElement, [None, False], False],
+            [AndGateElement, [False, None], False],
+            [AndGateElement, [False, False], False],
+            [AndGateElement, [None, True], True],
+            [AndGateElement, [True, None], True],
+            [AndGateElement, [False, True], False],
+            [AndGateElement, [True, False], False],
+            [AndGateElement, [True, True], True],
 
-            [sim.NorGateElement, [None, True], False],
-            [sim.NorGateElement, [True, None], False],
-            [sim.NorGateElement, [False, False], True],
-            [sim.NorGateElement, [None, False], True],
-            [sim.NorGateElement, [False, None], True],
-            [sim.NorGateElement, [False, True], False],
-            [sim.NorGateElement, [True, False], False],
-            [sim.NorGateElement, [True, True], False],
-            [sim.NorGateElement, [True, None], False],
-            [sim.NorGateElement, [None, True], False],
+            [NorGateElement, [None, True], False],
+            [NorGateElement, [True, None], False],
+            [NorGateElement, [False, False], True],
+            [NorGateElement, [None, False], True],
+            [NorGateElement, [False, None], True],
+            [NorGateElement, [False, True], False],
+            [NorGateElement, [True, False], False],
+            [NorGateElement, [True, True], False],
+            [NorGateElement, [True, None], False],
+            [NorGateElement, [None, True], False],
 
-            [sim.OrGateElement, [None, True], True],
-            [sim.OrGateElement, [True, None], True],
-            [sim.OrGateElement, [False, None], False],
-            [sim.OrGateElement, [None, False], False],
-            [sim.OrGateElement, [False, False], False],
-            [sim.OrGateElement, [False, True], True],
-            [sim.OrGateElement, [True, False], True],
-            [sim.OrGateElement, [True, True], True],
-            [sim.OrGateElement, [True, None], True],
-            [sim.OrGateElement, [None, True], True],
+            [OrGateElement, [None, True], True],
+            [OrGateElement, [True, None], True],
+            [OrGateElement, [False, None], False],
+            [OrGateElement, [None, False], False],
+            [OrGateElement, [False, False], False],
+            [OrGateElement, [False, True], True],
+            [OrGateElement, [True, False], True],
+            [OrGateElement, [True, True], True],
+            [OrGateElement, [True, None], True],
+            [OrGateElement, [None, True], True],
 
-            [sim.NandGateElement, [None, True], False],
-            [sim.NandGateElement, [True, None], False],
-            [sim.NandGateElement, [False, False], True],
-            [sim.NandGateElement, [False, None], True],
-            [sim.NandGateElement, [None, False], True],
-            [sim.NandGateElement, [False, True], False],
-            [sim.NandGateElement, [True, False], False],
-            [sim.NandGateElement, [True, True], False],
-            [sim.NandGateElement, [True, None], False],
-            [sim.NandGateElement, [None, True], False],
+            [NandGateElement, [None, True], False],
+            [NandGateElement, [True, None], False],
+            [NandGateElement, [False, False], True],
+            [NandGateElement, [False, None], True],
+            [NandGateElement, [None, False], True],
+            [NandGateElement, [False, True], False],
+            [NandGateElement, [True, False], False],
+            [NandGateElement, [True, True], False],
+            [NandGateElement, [True, None], False],
+            [NandGateElement, [None, True], False],
 
-            [sim.XorGateElement, [False, None], False],
-            [sim.XorGateElement, [None, False], False],
-            [sim.XorGateElement, [False, False], False],
-            [sim.XorGateElement, [False, True], True],
-            [sim.XorGateElement, [True, False], True],
-            [sim.XorGateElement, [True, True], False],
-            [sim.XorGateElement, [True, None], True],
-            [sim.XorGateElement, [None, True], True],
+            [XorGateElement, [False, None], False],
+            [XorGateElement, [None, False], False],
+            [XorGateElement, [False, False], False],
+            [XorGateElement, [False, True], True],
+            [XorGateElement, [True, False], True],
+            [XorGateElement, [True, True], False],
+            [XorGateElement, [True, None], True],
+            [XorGateElement, [None, True], True],
 
-            [sim.XnorGateElement, [False, False], True],
-            [sim.XnorGateElement, [False, None], True],
-            [sim.XnorGateElement, [None, False], True],
-            [sim.XnorGateElement, [False, True], False],
-            [sim.XnorGateElement, [True, False], False],
-            [sim.XnorGateElement, [True, True], True],
-            [sim.XnorGateElement, [True, None], False],
-            [sim.XnorGateElement, [None, True], False],
+            [XnorGateElement, [False, False], True],
+            [XnorGateElement, [False, None], True],
+            [XnorGateElement, [None, False], True],
+            [XnorGateElement, [False, True], False],
+            [XnorGateElement, [True, False], False],
+            [XnorGateElement, [True, True], True],
+            [XnorGateElement, [True, None], False],
+            [XnorGateElement, [None, True], False],
         ]
     )
     def test_resolve(self, cls, inputs, result):
-        input_nodes = [sim.Node(value=[i]) for i in inputs]
-        output_node = sim.Node()
+        input_nodes = [Node(value=[i]) for i in inputs]
+        output_node = Node()
         element = cls(input_nodes, output_node)
 
         nodes = list(element.resolve())

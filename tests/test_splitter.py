@@ -1,6 +1,7 @@
-from ouca.circuits import sim
-
 import pytest
+
+from ouca.circuits import Node
+from ouca.circuits.splitter import SplitterElement
 
 
 class TestSplitterElement:
@@ -15,9 +16,9 @@ class TestSplitterElement:
         ]
     )
     def test_is_resolvable(self, input_val, output_vals, resolvable):
-        input_node = sim.Node(input_val)
-        output_nodes = [sim.Node(output_val) for output_val in output_vals]
-        element = sim.SplitterElement(
+        input_node = Node(input_val)
+        output_nodes = [Node(output_val) for output_val in output_vals]
+        element = SplitterElement(
             input_node,
             output_nodes,
             2,
@@ -59,9 +60,9 @@ class TestSplitterElement:
     ):
         assert len(bitwidths_out) == len(output_vals)
 
-        input_node = sim.Node(input_val)
-        output_nodes = [sim.Node() for _ in bitwidths_out]
-        element = sim.SplitterElement(
+        input_node = Node(input_val)
+        output_nodes = [Node() for _ in bitwidths_out]
+        element = SplitterElement(
             input_node,
             output_nodes,
             bitwidth_in,
@@ -106,9 +107,9 @@ class TestSplitterElement:
     ):
         assert len(bitwidths_out) == len(output_vals)
 
-        input_node = sim.Node()
-        output_nodes = [sim.Node(val) for val in output_vals]
-        element = sim.SplitterElement(
+        input_node = Node()
+        output_nodes = [Node(val) for val in output_vals]
+        element = SplitterElement(
             input_node,
             output_nodes,
             bitwidth_in,

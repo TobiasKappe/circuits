@@ -1,6 +1,7 @@
 import pytest
 
-from ouca.circuits import sim
+from ouca.circuits import Node
+from ouca.circuits.idec import InstructionDecoderElement
 from ouca.circuits.tests import vectors
 
 
@@ -14,17 +15,17 @@ class TestInstructionDecoder:
         ]
     )
     def test_is_resolvable(self, instr, resolvable):
-        idec = sim.InstructionDecoderElement(
-            sim.Node(bitwidth=32),
-            sim.Node(),
-            sim.Node(),
-            sim.Node(),
-            sim.Node(),
-            sim.Node(),
-            sim.Node(bitwidth=5),
-            sim.Node(bitwidth=5),
-            sim.Node(bitwidth=5),
-            sim.Node(bitwidth=32),
+        idec = InstructionDecoderElement(
+            Node(bitwidth=32),
+            Node(),
+            Node(),
+            Node(),
+            Node(),
+            Node(),
+            Node(bitwidth=5),
+            Node(bitwidth=5),
+            Node(bitwidth=5),
+            Node(bitwidth=32),
         )
 
         idec.instr.value = instr
@@ -47,17 +48,17 @@ class TestInstructionDecoder:
         rs2,
         constant,
     ):
-        idec = sim.InstructionDecoderElement(
-            sim.Node(bitwidth=32),
-            sim.Node(),
-            sim.Node(),
-            sim.Node(),
-            sim.Node(),
-            sim.Node(),
-            sim.Node(bitwidth=5),
-            sim.Node(bitwidth=5),
-            sim.Node(bitwidth=5),
-            sim.Node(bitwidth=32),
+        idec = InstructionDecoderElement(
+            Node(bitwidth=32),
+            Node(),
+            Node(),
+            Node(),
+            Node(),
+            Node(),
+            Node(bitwidth=5),
+            Node(bitwidth=5),
+            Node(bitwidth=5),
+            Node(bitwidth=32),
         )
 
         idec.instr.value = instr

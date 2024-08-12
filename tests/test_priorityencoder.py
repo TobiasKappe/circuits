@@ -1,6 +1,7 @@
-from ouca.circuits import sim
-
 import pytest
+
+from ouca.circuits import Node
+from ouca.circuits.coder import PriorityEncoderElement
 
 
 class TestPriorityEncoderElement:
@@ -15,10 +16,10 @@ class TestPriorityEncoderElement:
     def test_is_resolvable(self, input_vals, resolvable):
         bits = len(input_vals).bit_length()-1
 
-        inputs = [sim.Node(input_val) for input_val in input_vals]
-        outputs = [sim.Node() for _ in range(bits)]
-        enable = sim.Node()
-        element = sim.PriorityEncoderElement(
+        inputs = [Node(input_val) for input_val in input_vals]
+        outputs = [Node() for _ in range(bits)]
+        enable = Node()
+        element = PriorityEncoderElement(
             inputs,
             outputs,
             enable,
@@ -40,10 +41,10 @@ class TestPriorityEncoderElement:
     def test_resolve(self, input_vals, enable_val, output_vals):
         bits = len(input_vals).bit_length()-1
 
-        inputs = [sim.Node([input_val]) for input_val in input_vals]
-        outputs = [sim.Node() for _ in range(bits)]
-        enable = sim.Node()
-        element = sim.PriorityEncoderElement(
+        inputs = [Node([input_val]) for input_val in input_vals]
+        outputs = [Node() for _ in range(bits)]
+        enable = Node()
+        element = PriorityEncoderElement(
             inputs,
             outputs,
             enable,

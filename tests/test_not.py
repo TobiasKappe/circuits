@@ -1,6 +1,7 @@
-from ouca.circuits import sim
-
 import pytest
+
+from ouca.circuits import Node
+from ouca.circuits.logic import NotGateElement
 
 
 class TestNotGateElement:
@@ -13,9 +14,9 @@ class TestNotGateElement:
         ]
     )
     def test_is_resolvable(self, input_val, resolvable):
-        input_node = sim.Node(value=[input_val])
-        output_node = sim.Node()
-        element = sim.NotGateElement(input_node, output_node)
+        input_node = Node(value=[input_val])
+        output_node = Node()
+        element = NotGateElement(input_node, output_node)
 
         assert element.is_resolvable() is resolvable
 
@@ -27,9 +28,9 @@ class TestNotGateElement:
         ]
     )
     def test_resolve(self, input_val, result):
-        input_node = sim.Node(value=[input_val])
-        output_node = sim.Node()
-        element = sim.NotGateElement(input_node, output_node)
+        input_node = Node(value=[input_val])
+        output_node = Node()
+        element = NotGateElement(input_node, output_node)
 
         nodes = list(element.resolve())
         assert nodes == [output_node]

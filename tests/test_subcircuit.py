@@ -1,14 +1,17 @@
-from ouca.circuits import sim
-
 import pytest
+
+from ouca.circuits import Node, Circuit
+from ouca.circuits.io import InputElement, OutputElement
+from ouca.circuits.logic import NotGateElement
+from ouca.circuits.subcircuit import SubCircuitElement
 
 
 class TestSubCircuit:
     def test_copy_input(self):
-        inner = [sim.InputElement(sim.Node(), None) for _ in range(2)]
-        outer = [sim.Node() for _ in range(2)]
-        sub = sim.Circuit(inner, sum((n.nodes for n in inner), start=[]))
-        element = sim.SubCircuitElement(sub, outer, [])
+        inner = [InputElement(Node(), None) for _ in range(2)]
+        outer = [Node() for _ in range(2)]
+        sub = Circuit(inner, sum((n.nodes for n in inner), start=[]))
+        element = SubCircuitElement(sub, outer, [])
 
         assert element.is_resolvable()
 
@@ -20,10 +23,10 @@ class TestSubCircuit:
         assert inner[1].state == [True]
 
     def test_copy_output(self):
-        inner = [sim.OutputElement(sim.Node()) for _ in range(2)]
-        outer = [sim.Node() for _ in range(2)]
-        sub = sim.Circuit(inner, sum((n.nodes for n in inner), start=[]))
-        element = sim.SubCircuitElement(sub, [], outer)
+        inner = [OutputElement(Node()) for _ in range(2)]
+        outer = [Node() for _ in range(2)]
+        sub = Circuit(inner, sum((n.nodes for n in inner), start=[]))
+        element = SubCircuitElement(sub, [], outer)
 
         assert element.is_resolvable()
 
@@ -42,18 +45,18 @@ class TestSubCircuit:
         ]
     )
     def test_compute(self, input_value, output_value):
-        inner_input = sim.InputElement(sim.Node())
-        inner_output = sim.OutputElement(sim.Node())
-        inner_gate = sim.NotGateElement(inner_input.output1, inner_output.inp1)
+        inner_input = InputElement(Node())
+        inner_output = OutputElement(Node())
+        inner_gate = NotGateElement(inner_input.output1, inner_output.inp1)
 
-        outer_input = sim.Node()
-        outer_output = sim.Node()
+        outer_input = Node()
+        outer_output = Node()
 
-        sub = sim.Circuit(
+        sub = Circuit(
             [inner_input, inner_gate, inner_output],
             inner_input.nodes + inner_output.nodes + inner_gate.nodes,
         )
-        element = sim.SubCircuitElement(sub, [outer_input], [outer_output])
+        element = SubCircuitElement(sub, [outer_input], [outer_output])
 
         assert element.is_resolvable()
 

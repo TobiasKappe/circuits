@@ -1,6 +1,7 @@
-from ouca.circuits import sim
-
 import pytest
+
+from ouca.circuits import Node
+from ouca.circuits.sign import SignExtendElement
 
 
 class TestSignExtendElement:
@@ -13,9 +14,9 @@ class TestSignExtendElement:
         ]
     )
     def test_is_resolvable(self, input_val, resolvable):
-        input = sim.Node(input_val)
-        output = sim.Node()
-        element = sim.SignExtendElement(input, output)
+        input = Node(input_val)
+        output = Node()
+        element = SignExtendElement(input, output)
 
         assert element.is_resolvable() is resolvable
 
@@ -31,9 +32,9 @@ class TestSignExtendElement:
     )
     def test_resolve(self, input_val, output_val):
         bitwidth = len(input_val)
-        input = sim.Node(input_val, bitwidth=bitwidth)
-        output = sim.Node()
-        element = sim.SignExtendElement(input, output, bitwidth=bitwidth)
+        input = Node(input_val, bitwidth=bitwidth)
+        output = Node()
+        element = SignExtendElement(input, output, bitwidth=bitwidth)
 
         nodes = list(element.resolve())
 

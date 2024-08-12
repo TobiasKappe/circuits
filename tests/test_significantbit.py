@@ -1,6 +1,7 @@
-from ouca.circuits import sim
-
 import pytest
+
+from ouca.circuits import Node
+from ouca.circuits.singlebit import MSBElement, LSBElement
 
 
 class TestMSB:
@@ -22,10 +23,10 @@ class TestMSB:
         input_vals,
         resolvable,
     ):
-        input = sim.Node()
-        output = sim.Node()
-        enable = sim.Node()
-        element = sim.MSBElement(input, output, enable, bitwidth=bitwidth)
+        input = Node()
+        output = Node()
+        enable = Node()
+        element = MSBElement(input, output, enable, bitwidth=bitwidth)
 
         input.value = input_vals
 
@@ -49,10 +50,10 @@ class TestMSB:
         output_val,
         enable_val,
     ):
-        input = sim.Node()
-        output = sim.Node()
-        enable = sim.Node()
-        element = sim.MSBElement(input, output, enable, bitwidth=bitwidth)
+        input = Node()
+        output = Node()
+        enable = Node()
+        element = MSBElement(input, output, enable, bitwidth=bitwidth)
 
         input.value = input_val
 
@@ -83,10 +84,10 @@ class TestLSB:
         input_vals,
         resolvable,
     ):
-        input = sim.Node()
-        output = sim.Node()
-        enable = sim.Node()
-        element = sim.LSBElement(input, output, enable, bitwidth=bitwidth)
+        input = Node()
+        output = Node()
+        enable = Node()
+        element = LSBElement(input, output, enable, bitwidth=bitwidth)
 
         input.value = input_vals
 
@@ -110,10 +111,10 @@ class TestLSB:
         output_val,
         enable_val,
     ):
-        input = sim.Node()
-        output = sim.Node()
-        enable = sim.Node()
-        element = sim.LSBElement(input, output, enable, bitwidth=bitwidth)
+        input = Node()
+        output = Node()
+        enable = Node()
+        element = LSBElement(input, output, enable, bitwidth=bitwidth)
 
         input.value = input_val
 

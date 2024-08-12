@@ -1,8 +1,8 @@
-from pathlib import Path
-
 import pytest
 
-from ouca.circuits import sim
+from pathlib import Path
+
+from ouca.circuits import Circuit
 
 
 class TestEndToEnd:
@@ -16,7 +16,7 @@ class TestEndToEnd:
          for k in range(2)]
     )
     def test_adder(self, input_values, outcome, carry):
-        circuit = sim.Circuit.load_file(
+        circuit = Circuit.load_file(
             self.CIRCUITS_PATH / 'adder.cv',
             'Main'
         )
@@ -37,7 +37,7 @@ class TestEndToEnd:
         ]
     )
     def test_decoder(self, input_values, output_index):
-        circuit = sim.Circuit.load_file(
+        circuit = Circuit.load_file(
             self.CIRCUITS_PATH / 'decoder.cv',
             'Main'
         )
@@ -50,7 +50,7 @@ class TestEndToEnd:
             assert output.value == [3-i == output_index]
 
     def test_flipflop(self):
-        circuit = sim.Circuit.load_file(
+        circuit = Circuit.load_file(
             self.CIRCUITS_PATH / 'flipflop.cv',
             'Main'
         )
@@ -91,7 +91,7 @@ class TestEndToEnd:
          for k in range(2)]
     )
     def test_subcircuit(self, input_values, outcome):
-        circuit = sim.Circuit.load_file(
+        circuit = Circuit.load_file(
             self.CIRCUITS_PATH / 'subcircuit.cv',
             'Main'
         )

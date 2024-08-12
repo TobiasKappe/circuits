@@ -1,12 +1,14 @@
-from ouca.circuits import sim
-
 import pytest
+
+from ouca.circuits import Node
+from ouca.circuits.constant import \
+    ConstantValElement, GroundElement, PowerElement
 
 
 class TestConstantValElement:
     def test_resolve(self):
-        output = sim.Node()
-        element = sim.ConstantValElement(
+        output = Node()
+        element = ConstantValElement(
             [True, False, True],
             output,
             bitwidth=3,
@@ -21,14 +23,14 @@ class TestFixedValElement:
     @pytest.mark.parametrize(
         'bitwidth, cls, value',
         [
-            [1, sim.GroundElement, [False]],
-            [2, sim.GroundElement, [False, False]],
-            [1, sim.PowerElement, [True]],
-            [2, sim.PowerElement, [True, True]],
+            [1, GroundElement, [False]],
+            [2, GroundElement, [False, False]],
+            [1, PowerElement, [True]],
+            [2, PowerElement, [True, True]],
         ]
     )
     def test_resolve(self, bitwidth, cls, value):
-        output = sim.Node()
+        output = Node()
         element = cls(output, bitwidth=bitwidth)
 
         nodes = list(element.resolve())

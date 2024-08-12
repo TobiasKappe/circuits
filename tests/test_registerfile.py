@@ -2,18 +2,19 @@ import pytest
 
 from riscv.data import RiscInteger
 
-from ouca.circuits import sim
+from ouca.circuits import Node
+from ouca.circuits.register import RegisterFileElement
 
 
 class TestRegisterFileElement:
     def test_is_resolvable(self):
-        R = [sim.Node(bitwidth=5) for _ in range(3)]
-        clock = sim.Node()
-        dataIn = sim.Node(bitwidth=32)
-        dataOut = [sim.Node(bitwidth=32), sim.Node(bitwidth=32)]
-        en = sim.Node()
+        R = [Node(bitwidth=5) for _ in range(3)]
+        clock = Node()
+        dataIn = Node(bitwidth=32)
+        dataOut = [Node(bitwidth=32), Node(bitwidth=32)]
+        en = Node()
 
-        rf = sim.RegisterFileElement(
+        rf = RegisterFileElement(
             R[0],
             R[1],
             R[2],
@@ -27,13 +28,13 @@ class TestRegisterFileElement:
 
     @pytest.mark.parametrize('index', [0, 1])
     def test_read(self, index):
-        R = [sim.Node(bitwidth=5) for _ in range(3)]
-        clock = sim.Node()
-        dataIn = sim.Node(bitwidth=32)
-        dataOut = [sim.Node(bitwidth=32), sim.Node(bitwidth=32)]
-        en = sim.Node()
+        R = [Node(bitwidth=5) for _ in range(3)]
+        clock = Node()
+        dataIn = Node(bitwidth=32)
+        dataOut = [Node(bitwidth=32), Node(bitwidth=32)]
+        en = Node()
 
-        rf = sim.RegisterFileElement(
+        rf = RegisterFileElement(
             R[0],
             R[1],
             R[2],
@@ -57,13 +58,13 @@ class TestRegisterFileElement:
         assert dataOut[index].value == RiscInteger(5).bits
 
     def test_write(self):
-        R = [sim.Node(bitwidth=5) for _ in range(3)]
-        clock = sim.Node()
-        dataIn = sim.Node(bitwidth=32)
-        dataOut = [sim.Node(bitwidth=32), sim.Node(bitwidth=32)]
-        en = sim.Node()
+        R = [Node(bitwidth=5) for _ in range(3)]
+        clock = Node()
+        dataIn = Node(bitwidth=32)
+        dataOut = [Node(bitwidth=32), Node(bitwidth=32)]
+        en = Node()
 
-        rf = sim.RegisterFileElement(
+        rf = RegisterFileElement(
             R[0],
             R[1],
             R[2],

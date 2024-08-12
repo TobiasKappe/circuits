@@ -1,6 +1,7 @@
-from ouca.circuits import sim
-
 import pytest
+
+from ouca.circuits import Node
+from ouca.circuits.mux import DemultiplexerElement
 
 
 class TestDemultiplexer:
@@ -22,10 +23,10 @@ class TestDemultiplexer:
         input_val,
         resolvable,
     ):
-        control = sim.Node()
-        input = sim.Node()
-        outputs = [sim.Node() for _ in range(2**signal_size)]
-        element = sim.DemultiplexerElement(
+        control = Node()
+        input = Node()
+        outputs = [Node() for _ in range(2**signal_size)]
+        element = DemultiplexerElement(
             signal_size,
             control,
             input,
@@ -66,10 +67,10 @@ class TestDemultiplexer:
         input_val,
         output_vals,
     ):
-        control = sim.Node()
-        input = sim.Node()
-        outputs = [sim.Node() for _ in range(2**signal_size)]
-        element = sim.DemultiplexerElement(
+        control = Node()
+        input = Node()
+        outputs = [Node() for _ in range(2**signal_size)]
+        element = DemultiplexerElement(
             signal_size,
             control,
             input,
