@@ -6,7 +6,7 @@ from ouca.circuits import Circuit
 
 
 class TestEndToEnd:
-    CIRCUITS_PATH = Path(__file__).parent.parent.resolve() / 'circuits'
+    CIRCUITS_PATH = Path(__file__).parent.parent.resolve() / 'exported'
 
     @pytest.mark.parametrize(
         'input_values, outcome, carry',
