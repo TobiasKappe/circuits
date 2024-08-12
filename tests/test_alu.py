@@ -1,7 +1,7 @@
 import pytest
 
-from ouca.circuits import Node
-from ouca.circuits.calculate import ALUElement
+from circuits import Node
+from circuits.calculate import ALUElement
 
 
 class TestALU:

@@ -1,11 +1,11 @@
 from functools import singledispatchmethod
 from typing import List
 
-from ouca.circuits.element import Element
-from ouca.circuits.node import Node
-from ouca.circuits.circuit import Circuit
-from ouca.circuits.exceptions import CircuitSubscopeException
-from ouca.circuits.registry import ElementRegistry
+from circuits.element import Element
+from circuits.node import Node
+from circuits.circuit import Circuit
+from circuits.exceptions import CircuitSubscopeException
+from circuits.registry import ElementRegistry
 
 
 @ElementRegistry.add_impl('SubCircuit')

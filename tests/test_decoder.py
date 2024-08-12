@@ -1,7 +1,7 @@
 import pytest
 
-from ouca.circuits import Node
-from ouca.circuits.coder import DecoderElement
+from circuits import Node
+from circuits.coder import DecoderElement
 
 
 class TestDecoder:

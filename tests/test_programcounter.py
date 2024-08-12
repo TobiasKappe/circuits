@@ -2,8 +2,8 @@ import pytest
 
 from riscv.data import RiscInteger
 
-from ouca.circuits import Node
-from ouca.circuits.pc import ProgramCounterElement
+from circuits import Node
+from circuits.pc import ProgramCounterElement
 
 
 class TestProgramCounterElement:

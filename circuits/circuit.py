@@ -3,13 +3,13 @@ import queue
 
 from typing import List
 
-from ouca.circuits.element import Element
-from ouca.circuits.node import Node
-from ouca.circuits.exceptions import \
+from circuits.element import Element
+from circuits.node import Node
+from circuits.exceptions import \
     ContentionException, CircuitUnstableException
-from ouca.circuits.io import InputElement, OutputElement
-from ouca.circuits.mock import MockElement
-from ouca.circuits.registry import ElementRegistry
+from circuits.io import InputElement, OutputElement
+from circuits.mock import MockElement
+from circuits.registry import ElementRegistry
 
 
 class Circuit:

@@ -1,7 +1,7 @@
 import pytest
 
-from ouca.circuits import Node
-from ouca.circuits.logic import \
+from circuits import Node
+from circuits.logic import \
     LogicElement, AndGateElement, NorGateElement, OrGateElement, \
     NandGateElement, XorGateElement, XnorGateElement
 

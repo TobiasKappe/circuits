@@ -1,7 +1,7 @@
 import pytest
 
-from ouca.circuits import Node
-from ouca.circuits.logic import NotGateElement
+from circuits import Node
+from circuits.logic import NotGateElement
 
 
 class TestNotGateElement:

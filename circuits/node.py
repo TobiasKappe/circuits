@@ -1,7 +1,7 @@
 from typing import List, Union
 
-from ouca.circuits.element import Element
-from ouca.circuits.exceptions import ContentionException
+from circuits.element import Element
+from circuits.exceptions import ContentionException
 
 
 class Node:

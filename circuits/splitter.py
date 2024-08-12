@@ -1,9 +1,9 @@
 from functools import singledispatchmethod
 from typing import List
 
-from ouca.circuits.element import Element
-from ouca.circuits.node import Node
-from ouca.circuits.registry import ElementRegistry
+from circuits.element import Element
+from circuits.node import Node
+from circuits.registry import ElementRegistry
 
 
 @ElementRegistry.add_impl('Splitter')

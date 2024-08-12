@@ -2,7 +2,7 @@ import pytest
 
 from pathlib import Path
 
-from ouca.circuits import Circuit
+from circuits import Circuit
 
 
 class TestEndToEnd:

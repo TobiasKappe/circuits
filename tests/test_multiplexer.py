@@ -1,7 +1,7 @@
 import pytest
 
-from ouca.circuits import Node
-from ouca.circuits.mux import MultiplexerElement
+from circuits import Node
+from circuits.mux import MultiplexerElement
 
 
 class TestMultiplexer:

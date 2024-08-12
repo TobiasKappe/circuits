@@ -2,8 +2,8 @@ import pytest
 
 from riscv.data import RiscInteger
 
-from ouca.circuits import Node
-from ouca.circuits.ram import RAMElement
+from circuits import Node
+from circuits.ram import RAMElement
 
 
 class TestRAMElement:

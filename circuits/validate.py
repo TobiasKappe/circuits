@@ -1,4 +1,4 @@
-from ouca.circuits import sim
+from circuits import sim
 
 from argparse import ArgumentParser
 

@@ -1,7 +1,7 @@
 import pytest
 
-from ouca.circuits import Node
-from ouca.circuits.constant import \
+from circuits import Node
+from circuits.constant import \
     ConstantValElement, GroundElement, PowerElement
 
 

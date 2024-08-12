@@ -1,7 +1,7 @@
 import pytest
 
-from ouca.circuits import Node
-from ouca.circuits.singlebit import MSBElement, LSBElement
+from circuits import Node
+from circuits.singlebit import MSBElement, LSBElement
 
 
 class TestMSB:

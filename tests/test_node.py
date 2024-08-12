@@ -1,7 +1,7 @@
 import pytest
 
-from ouca.circuits import Node
-from ouca.circuits.exceptions import ContentionException
+from circuits import Node
+from circuits.exceptions import ContentionException
 
 
 class TestNode:

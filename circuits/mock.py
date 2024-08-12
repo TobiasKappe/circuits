@@ -1,5 +1,5 @@
-from ouca.circuits.element import Element
-from ouca.circuits.node import Node
+from circuits.element import Element
+from circuits.node import Node
 
 
 class MockElement(Element):

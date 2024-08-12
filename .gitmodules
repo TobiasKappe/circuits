@@ -1,0 +1,3 @@
+[submodule "riscv"]
+	path = riscv
+	url = git@github.com:TobiasKappe/riscv.git

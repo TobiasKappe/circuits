@@ -1,0 +1,22 @@
+[project]
+name = "circuits"
+version = "0.1.0"
+description = "Simulator for CircuitVerse circuits"
+
+[tool.poetry]
+name = "circuits"
+version = "0.1.0"
+description = "Simulator for CircuitVerse circuits"
+authors = ["Tobias Kappé <tobias@kap.pe>"]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+riscv = { path = "riscv", develop = true }
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.1"
+pytest-cov = "^5.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

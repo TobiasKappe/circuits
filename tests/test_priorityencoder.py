@@ -1,7 +1,7 @@
 import pytest
 
-from ouca.circuits import Node
-from ouca.circuits.coder import PriorityEncoderElement
+from circuits import Node
+from circuits.coder import PriorityEncoderElement
 
 
 class TestPriorityEncoderElement:

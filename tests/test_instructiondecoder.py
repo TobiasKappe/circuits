@@ -1,8 +1,7 @@
 import pytest
 
-from ouca.circuits import Node
-from ouca.circuits.idec import InstructionDecoderElement
-from ouca.circuits.tests import vectors
+from circuits import Node
+from circuits.idec import InstructionDecoderElement
 
 
 class TestInstructionDecoder:
@@ -33,7 +32,71 @@ class TestInstructionDecoder:
 
     @pytest.mark.parametrize(
         'instr, add, addi, lw, sw, blt, rd, rs1, rs2, constant',
-        vectors.DECODE_TEST_VECTORS
+        [
+            [
+                [True, True, False, False, True, True, False, True,
+                 True, True, False, False, False, False, False, False,
+                 True, False, True, False, True, True, False, True,
+                 True, False, False, False, False, False, False, False],
+                True, False, False, False, False,
+                [True, True, True, False, False],
+                [False, True, False, True, False],
+                [True, True, False, True, True],
+                None,
+            ], [
+                [True, True, False, False, True, False, False, False,
+                 False, False, True, False, False, False, False, True,
+                 False, False, False, True, True, True, False, True,
+                 True, False, True, True, False, True, True, False],
+                False, True, False, False, False,
+                [False, False, False, True, False],
+                [True, False, False, False, True],
+                None,
+                [True, True, False, True, True, False, True, True,
+                 False, True, True, False, False, False, False, False,
+                 False, False, False, False, False, False, False, False,
+                 False, False, False, False, False, False, False, False],
+            ], [
+                [True, True, False, False, False, False, False, False,
+                 True, True, True, False, False, True, False, False,
+                 True, True, False, True, False, True, True, False,
+                 True, True, False, True, True, False, True, True],
+                False, False, True, False, False,
+                [False, True, True, True, False],
+                [False, True, True, False, True],
+                None,
+                [False, True, True, False, True, True, False, True,
+                 True, False, True, True, True, True, True, True,
+                 True, True, True, True, True, True, True, True,
+                 True, True, True, True, True, True, True, True],
+            ], [
+                [True, True, False, False, False, True, False, True,
+                 False, True, False, True, False, True, False, True,
+                 True, False, False, True, True, False, True, True,
+                 True, False, True, False, True, False, True, False],
+                False, False, False, True, False,
+                None,
+                [True, True, False, False, True],
+                [True, False, True, True, True],
+                [True, False, True, False, True, False, True, False,
+                 True, False, True, False, False, False, False, False,
+                 False, False, False, False, False, False, False, False,
+                 False, False, False, False, False, False, False, False],
+            ], [
+                [True, True, False, False, False, True, True, False,
+                 False, False, True, False, False, False, True, True,
+                 True, False, True, False, True, True, True, False,
+                 True, False, False, True, False, False, True, True],
+                False, False, False, False, True,
+                None,
+                [True, True, False, True, False],
+                [True, True, True, False, True],
+                [False, False, False, True, False, False, False, True,
+                 False, False, True, False, True, True, True, True,
+                 True, True, True, True, True, True, True, True,
+                 True, True, True, True, True, True, True, True],
+            ]
+        ]
     )
     def test_resolve(
         self,

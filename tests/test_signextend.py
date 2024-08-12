@@ -1,7 +1,7 @@
 import pytest
 
-from ouca.circuits import Node
-from ouca.circuits.sign import SignExtendElement
+from circuits import Node
+from circuits.sign import SignExtendElement
 
 
 class TestSignExtendElement:

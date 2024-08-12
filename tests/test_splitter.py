@@ -1,7 +1,7 @@
 import pytest
 
-from ouca.circuits import Node
-from ouca.circuits.splitter import SplitterElement
+from circuits import Node
+from circuits.splitter import SplitterElement
 
 
 class TestSplitterElement:

@@ -2,8 +2,8 @@ import pytest
 
 from riscv.data import RiscInteger
 
-from ouca.circuits import Node
-from ouca.circuits.register import RegisterFileElement
+from circuits import Node
+from circuits.register import RegisterFileElement
 
 
 class TestRegisterFileElement:

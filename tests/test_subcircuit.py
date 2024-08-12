@@ -1,9 +1,9 @@
 import pytest
 
-from ouca.circuits import Node, Circuit
-from ouca.circuits.io import InputElement, OutputElement
-from ouca.circuits.logic import NotGateElement
-from ouca.circuits.subcircuit import SubCircuitElement
+from circuits import Node, Circuit
+from circuits.io import InputElement, OutputElement
+from circuits.logic import NotGateElement
+from circuits.subcircuit import SubCircuitElement
 
 
 class TestSubCircuit:
