@@ -6,7 +6,7 @@ from ouca.circuits.node import Node
 from ouca.circuits.registry import ElementRegistry
 
 
-class CombinatorialElement(Element):
+class LogicElement(Element):
     @singledispatchmethod
     def __init__(
         self,
@@ -53,7 +53,7 @@ class CombinatorialElement(Element):
 
 
 @ElementRegistry.add_impl('AndGate')
-class AndGateElement(CombinatorialElement):
+class AndGateElement(LogicElement):
     def resolve_per_bit(self, i):
         for inp in self.inp:
             if inp.value is not None and \
@@ -64,7 +64,7 @@ class AndGateElement(CombinatorialElement):
 
 
 @ElementRegistry.add_impl('NorGate')
-class NorGateElement(CombinatorialElement):
+class NorGateElement(LogicElement):
     def resolve_per_bit(self, i):
         for inp in self.inp:
             if inp.value is not None and \
@@ -75,7 +75,7 @@ class NorGateElement(CombinatorialElement):
 
 
 @ElementRegistry.add_impl('OrGate')
-class OrGateElement(CombinatorialElement):
+class OrGateElement(LogicElement):
     def resolve_per_bit(self, i):
         for inp in self.inp:
             if inp.value is not None and \
@@ -86,7 +86,7 @@ class OrGateElement(CombinatorialElement):
 
 
 @ElementRegistry.add_impl('NandGate')
-class NandGateElement(CombinatorialElement):
+class NandGateElement(LogicElement):
     def resolve_per_bit(self, i):
         for inp in self.inp:
             if inp.value is not None and \
@@ -96,7 +96,7 @@ class NandGateElement(CombinatorialElement):
         return True
 
 
-class ParityGateElement(CombinatorialElement):
+class ParityGateElement(LogicElement):
     start_parity = None
 
     def resolve_per_bit(self, i):

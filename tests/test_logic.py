@@ -2,21 +2,21 @@ import pytest
 
 from ouca.circuits import Node
 from ouca.circuits.logic import \
-    CombinatorialElement, AndGateElement, NorGateElement, OrGateElement, \
+    LogicElement, AndGateElement, NorGateElement, OrGateElement, \
     NandGateElement, XorGateElement, XnorGateElement
 
 
-class TestCombinatorialElement:
+class TestLogicElement:
     @pytest.mark.parametrize(
         'cls, inputs, resolvable',
         [
-            [CombinatorialElement, [None, None], False],
-            [CombinatorialElement, [True, None], True],
-            [CombinatorialElement, [None, True], True],
-            [CombinatorialElement, [False, None], True],
-            [CombinatorialElement, [None, False], True],
-            [CombinatorialElement, [True, True], True],
-            [CombinatorialElement, [None, None, False], True],
+            [LogicElement, [None, None], False],
+            [LogicElement, [True, None], True],
+            [LogicElement, [None, True], True],
+            [LogicElement, [False, None], True],
+            [LogicElement, [None, False], True],
+            [LogicElement, [True, True], True],
+            [LogicElement, [None, None, False], True],
         ]
     )
     def test_is_resolvable(self, cls, inputs, resolvable):
