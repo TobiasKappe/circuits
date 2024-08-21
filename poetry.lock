@@ -107,17 +107,6 @@ files = [
 ]
 
 [[package]]
-name = "multimethod"
-version = "1.12"
-description = "Multiple argument dispatching."
-optional = false
-python-versions = ">=3.9"
-files = [
-    {file = "multimethod-1.12-py3-none-any.whl", hash = "sha256:fd0c473c43558908d97cc06e4d68e8f69202f167db46f7b4e4058893e7dbdf60"},
-    {file = "multimethod-1.12.tar.gz", hash = "sha256:8db8ef2a8d2a247e3570cc23317680892fdf903d84c8c1053667c8e8f7671a67"},
-]
-
-[[package]]
 name = "packaging"
 version = "24.1"
 description = "Core utilities for Python packages"
@@ -181,23 +170,7 @@ pytest = ">=4.6"
 [package.extras]
 testing = ["fields", "hunter", "process-tests", "pytest-xdist", "virtualenv"]
 
-[[package]]
-name = "riscv"
-version = "0.1.0"
-description = "Simulator for a subset of RISC-V"
-optional = false
-python-versions = "^3.12"
-files = []
-develop = true
-
-[package.dependencies]
-multimethod = "^1.11.2"
-
-[package.source]
-type = "directory"
-url = "riscv"
-
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "983004e04f718560e4260af865aca6b314731588cfef15acf9e475396d2cfde1"
+content-hash = "99407d617f76c4f26f298181bd6f7e28fccc235220074e3f3b74d9b274707bb3"

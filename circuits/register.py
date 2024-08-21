@@ -1,11 +1,10 @@
 from functools import singledispatchmethod
 from typing import List, Union
 
-from riscv.data import RiscInteger
-
 from circuits.element import Element
 from circuits.node import Node
 from circuits.registry import ElementRegistry
+from circuits.utils import array_to_int, int_to_array
 
 
 @ElementRegistry.add_impl('RegisterFile')
@@ -21,7 +20,7 @@ class RegisterFileElement(Element):
         dataOut1: Node,
         dataOut2: Node,
         en: Node,
-        values: Union[List[RiscInteger], None] = None,
+        values: Union[List[int], None] = None,
         **kwargs
     ):
         super().__init__(
@@ -36,23 +35,20 @@ class RegisterFileElement(Element):
         self.dataOut1 = dataOut1
         self.dataOut2 = dataOut2
         self.en = en
-        self.values = values or [RiscInteger(0) for _ in range(32)]
+        self.values = values or [0 for _ in range(32)]
         self.prev_clock = None
         self.validate()
 
     @__init__.register
     def load(self, raw_element: dict, **kwargs):
         super().__init__(raw_element, **kwargs)
-        self.values = [
-            RiscInteger(v, signed=False) if v >= 0 else RiscInteger(v)
-            for v in raw_element['customData']['constructorParamaters'][0]
-        ]
+        self.values = raw_element['customData']['constructorParamaters'][0]
         self.prev_clock = None
         self.validate()
 
     def validate(self):
         assert len(self.values) == 32
-        assert all(isinstance(v, RiscInteger) for v in self.values)
+        assert all(isinstance(v, int) for v in self.values)
 
         assert self.R1.bitwidth == 5
         assert self.R2.bitwidth == 5
@@ -75,17 +71,17 @@ class RegisterFileElement(Element):
            self.en.value is not None and \
            self.en.value[0] is True and \
            any(self.R3.value):
-            addr = RiscInteger(self.R3.value + [False] * 27)
-            self.values[addr.to_int()] = RiscInteger(self.dataIn.value)
+            addr = array_to_int(self.R3.value + [False] * 27)
+            self.values[addr] = array_to_int(self.dataIn.value)
 
         if self.R1.value is not None:
-            addr = RiscInteger(self.R1.value + [False] * 27)
-            self.dataOut1.value = self.values[addr.to_int()].bits
+            addr = array_to_int(self.R1.value + [False] * 27)
+            self.dataOut1.value = int_to_array(self.values[addr])
             yield self.dataOut1
 
         if self.R2.value is not None:
-            addr = RiscInteger(self.R2.value + [False] * 27)
-            self.dataOut2.value = self.values[addr.to_int()].bits
+            addr = array_to_int(self.R2.value + [False] * 27)
+            self.dataOut2.value = int_to_array(self.values[addr])
             yield self.dataOut2
 
         if self.clock.value is not None:

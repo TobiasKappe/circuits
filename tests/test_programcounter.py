@@ -1,7 +1,5 @@
 import pytest
 
-from riscv.data import RiscInteger
-
 from circuits import Node
 from circuits.pc import ProgramCounterElement
 
@@ -25,32 +23,32 @@ class TestProgramCounterElement:
         clock = Node()
 
         counter = ProgramCounterElement(dist, jump, reset, ctr, clock)
-        counter.value = RiscInteger(0x123)
+        counter.value = 0x123
 
         # If reset is high, the value becomes zero.
         reset.value = [True]
         nodes = list(counter.resolve())
-        assert counter.value == RiscInteger(0)
+        assert counter.value == 0
         assert ctr in nodes
         assert ctr.value == [False]*32
 
         # A raised clock edge does not increase the counter
         clock.value = [False]
         nodes = list(counter.resolve())
-        assert counter.value == RiscInteger(0)
+        assert counter.value == 0
         assert ctr in nodes
         assert ctr.value == [False]*32
 
         clock.value = [True]
         nodes = list(counter.resolve())
-        assert counter.value == RiscInteger(0)
+        assert counter.value == 0
         assert ctr in nodes
         assert ctr.value == [False]*32
 
         # De-asserting the reset line keeps the value at zero.
         reset.value = [False]
         nodes = list(counter.resolve())
-        assert counter.value == RiscInteger(0)
+        assert counter.value == 0
         assert ctr in nodes
         assert ctr.value == [False]*32
 
@@ -69,26 +67,26 @@ class TestProgramCounterElement:
         clock = Node()
 
         counter = ProgramCounterElement(dist, jump, reset, ctr, clock)
-        assert counter.value == RiscInteger(0)
+        assert counter.value == 0
 
         # Start with a low clock; no change to the value
         clock.value = [False]
         nodes = list(counter.resolve())
-        assert counter.value == RiscInteger(0)
+        assert counter.value == 0
         assert ctr in nodes
         assert ctr.value == [False]*32
 
         # Raise the clock edge; this increments the value by 4
         clock.value = [True]
         nodes = list(counter.resolve())
-        assert counter.value == RiscInteger(4)
+        assert counter.value == 4
         assert ctr in nodes
         assert ctr.value == [False, False, True] + [False]*29
 
         # Lower the clock edge again; this does not change the value
         clock.value = [False]
         nodes = list(counter.resolve())
-        assert counter.value == RiscInteger(4)
+        assert counter.value == 4
         assert ctr in nodes
         assert ctr.value == [False, False, True] + [False]*29
 
@@ -100,7 +98,7 @@ class TestProgramCounterElement:
         clock = Node()
 
         counter = ProgramCounterElement(dist, jump, reset, ctr, clock)
-        counter.value = RiscInteger(0x10)
+        counter.value = 0x10
 
         # A raised clock edge with an undefined value for dist does not
         # change the value of the counter
@@ -108,13 +106,13 @@ class TestProgramCounterElement:
 
         clock.value = [False]
         nodes = list(counter.resolve())
-        assert counter.value == RiscInteger(0x10)
+        assert counter.value == 0x10
         assert ctr in nodes
         assert ctr.value == [False]*4 + [True] + [False]*27
 
         clock.value = [True]
         nodes = list(counter.resolve())
-        assert counter.value == RiscInteger(0x10)
+        assert counter.value == 0x10
         assert ctr in nodes
         assert ctr.value == [False]*4 + [True] + [False]*27
 
@@ -124,13 +122,13 @@ class TestProgramCounterElement:
 
         clock.value = [False]
         nodes = list(counter.resolve())
-        assert counter.value == RiscInteger(0x10)
+        assert counter.value == 0x10
         assert ctr in nodes
         assert ctr.value == [False]*4 + [True] + [False]*27
 
         clock.value = [True]
         nodes = list(counter.resolve())
-        assert counter.value == RiscInteger(0x30)
+        assert counter.value == 0x30
         assert ctr in nodes
         assert ctr.value == [False]*4 + [True, True] + [False]*26
 
@@ -139,12 +137,12 @@ class TestProgramCounterElement:
 
         clock.value = [False]
         nodes = list(counter.resolve())
-        assert counter.value == RiscInteger(0x30)
+        assert counter.value == 0x30
         assert ctr in nodes
         assert ctr.value == [False]*4 + [True, True] + [False]*26
 
         clock.value = [True]
         nodes = list(counter.resolve())
-        assert counter.value == RiscInteger(0x20)
+        assert counter.value == 0x20
         assert ctr in nodes
         assert ctr.value == [False]*5 + [True] + [False]*26

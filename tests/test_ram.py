@@ -1,9 +1,8 @@
 import pytest
 
-from riscv.data import RiscInteger
-
 from circuits import Node
 from circuits.ram import RAMElement
+from circuits.utils import int_to_array, array_to_int
 
 
 class TestRAMElement:
@@ -41,7 +40,7 @@ class TestRAMElement:
             en,
             memAddr[0],
             memAddr[1],
-            values=[RiscInteger(i) for i in range(16)]
+            values=list(range(16))
         )
 
         # All inputs undefined, so no defined output.
@@ -53,7 +52,7 @@ class TestRAMElement:
         memAddr[index].value = [True, False]*3 + [False]*26
         nodes = list(ram.resolve())
         assert nodes == [dataOut[index]]
-        assert dataOut[index].value == RiscInteger(5).bits
+        assert dataOut[index].value == int_to_array(5)
 
     def test_write(self):
         clock = Node()
@@ -70,7 +69,7 @@ class TestRAMElement:
             en,
             memAddr[0],
             memAddr[1],
-            values=[RiscInteger(i) for i in range(16)]
+            values=list(range(16))
         )
 
         # Offering data on an undefined memory address does nothing
@@ -78,19 +77,19 @@ class TestRAMElement:
         nodes = list(ram.resolve())
         assert not nodes
         assert dataOut[0].value is None
-        assert all(ram.values[i] == RiscInteger(i) for i in range(16))
+        assert all(ram.values[i] == i for i in range(16))
 
         clock.value = [False]
         nodes = list(ram.resolve())
         assert not nodes
         assert dataOut[0].value is None
-        assert all(ram.values[i] == RiscInteger(i) for i in range(16))
+        assert all(ram.values[i] == i for i in range(16))
 
         clock.value = [True]
         nodes = list(ram.resolve())
         assert not nodes
         assert dataOut[0].value is None
-        assert all(ram.values[i] == RiscInteger(i) for i in range(16))
+        assert all(ram.values[i] == i for i in range(16))
 
         # Offering undefined data on a memory address just outputs the current
         # value at that address
@@ -98,25 +97,25 @@ class TestRAMElement:
         nodes = list(ram.resolve())
         assert not nodes
         assert dataOut[0].value is None
-        assert all(ram.values[i] == RiscInteger(i) for i in range(16))
+        assert all(ram.values[i] == i for i in range(16))
 
         memAddr[0].value = [False, True]*3 + [False]*26
         nodes = list(ram.resolve())
         assert nodes == [dataOut[0]]
-        assert dataOut[0].value == RiscInteger(10).bits
-        assert all(ram.values[i] == RiscInteger(i) for i in range(16))
+        assert dataOut[0].value == int_to_array(10)
+        assert all(ram.values[i] == i for i in range(16))
 
         clock.value = [False]
         nodes = list(ram.resolve())
         assert nodes == [dataOut[0]]
-        assert dataOut[0].value == RiscInteger(10).bits
-        assert all(ram.values[i] == RiscInteger(i) for i in range(16))
+        assert dataOut[0].value == int_to_array(10)
+        assert all(ram.values[i] == i for i in range(16))
 
         clock.value = [True]
         nodes = list(ram.resolve())
         assert nodes == [dataOut[0]]
-        assert dataOut[0].value == RiscInteger(10).bits
-        assert all(ram.values[i] == RiscInteger(i) for i in range(16))
+        assert dataOut[0].value == int_to_array(10)
+        assert all(ram.values[i] == i for i in range(16))
 
         # Offering defined data on a defined address with enable low does
         # nothing except offer the current value at the output
@@ -126,14 +125,14 @@ class TestRAMElement:
         en.value = [False]
         nodes = list(ram.resolve())
         assert nodes == [dataOut[0]]
-        assert dataOut[0].value == RiscInteger(10).bits
-        assert all(ram.values[i] == RiscInteger(i) for i in range(16))
+        assert dataOut[0].value == int_to_array(10)
+        assert all(ram.values[i] == i for i in range(16))
 
         clock.value = [True]
         nodes = list(ram.resolve())
         assert nodes == [dataOut[0]]
-        assert dataOut[0].value == RiscInteger(10).bits
-        assert all(ram.values[i] == RiscInteger(i) for i in range(16))
+        assert dataOut[0].value == int_to_array(10)
+        assert all(ram.values[i] == i for i in range(16))
 
         # Offering defined data on a defined address with enable high writes
         # that data to the values at that address, and immediately forwards it
@@ -143,15 +142,15 @@ class TestRAMElement:
         en.value = [True]
         nodes = list(ram.resolve())
         assert nodes == [dataOut[0]]
-        assert dataOut[0].value == RiscInteger(10).bits
-        assert all(ram.values[i] == RiscInteger(i) for i in range(16))
+        assert dataOut[0].value == int_to_array(10)
+        assert all(ram.values[i] == i for i in range(16))
 
         clock.value = [True]
         nodes = list(ram.resolve())
         assert nodes == [dataOut[0]]
         assert dataOut[0].value == [True, False]*16
         assert all(
-            ram.values[i] == RiscInteger(i)
+            ram.values[i] == i
             for i in range(16) if i != 10
         )
-        assert ram.values[10] == RiscInteger([True, False]*16)
+        assert ram.values[10] == array_to_int([True, False]*16)

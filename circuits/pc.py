@@ -1,10 +1,9 @@
 from functools import singledispatchmethod
 
-from riscv.data import RiscInteger
-
 from circuits.element import Element
 from circuits.node import Node
 from circuits.registry import ElementRegistry
+from circuits.utils import array_to_int, int_to_array, add_fixed_width
 
 
 @ElementRegistry.add_impl('ProgramCounter')
@@ -26,13 +25,13 @@ class ProgramCounterElement(Element):
         self.ctr = ctr
         self.clock = clock
         self.prev_clock = None
-        self.value = RiscInteger(0)
+        self.value = 0
         self.validate()
 
     @__init__.register
     def load(self, raw_element: dict, **kwargs):
         super().__init__(raw_element, **kwargs)
-        self.value = RiscInteger(0)
+        self.value = 0
         self.prev_clock = None
         self.validate()
 
@@ -48,16 +47,19 @@ class ProgramCounterElement(Element):
 
     def resolve(self):
         if self.reset.value is not None and self.reset.value[0] is True:
-            self.value = RiscInteger(0)
+            self.value = 0
         elif (self.clock.value is not None and self.clock.value[0] is True and
               self.prev_clock is False):
             if self.jump.value is not None and self.jump.value[0] is True:
                 if self.dist.value is not None:
-                    self.value += RiscInteger(self.dist.value)
+                    self.value = add_fixed_width(
+                        self.value,
+                        array_to_int(self.dist.value)
+                    )
             else:
-                self.value += RiscInteger(4)
+                self.value = add_fixed_width(self.value, 4)
 
-        self.ctr.value = self.value.bits
+        self.ctr.value = int_to_array(self.value)
         yield self.ctr
 
         if self.clock.value is not None:

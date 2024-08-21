@@ -1,9 +1,8 @@
 import pytest
 
-from riscv.data import RiscInteger
-
 from circuits import Node
 from circuits.register import RegisterFileElement
+from circuits.utils import array_to_int, int_to_array
 
 
 class TestRegisterFileElement:
@@ -43,7 +42,7 @@ class TestRegisterFileElement:
             dataOut[0],
             dataOut[1],
             en,
-            values=[RiscInteger(i) for i in range(32)],
+            values=list(range(32)),
         )
 
         # All inputs undefined, so no defined output.
@@ -55,7 +54,7 @@ class TestRegisterFileElement:
         R[index].value = [True, False]*2 + [False]
         nodes = list(rf.resolve())
         assert nodes == [dataOut[index]]
-        assert dataOut[index].value == RiscInteger(5).bits
+        assert dataOut[index].value == int_to_array(5)
 
     def test_write(self):
         R = [Node(bitwidth=5) for _ in range(3)]
@@ -73,24 +72,24 @@ class TestRegisterFileElement:
             dataOut[0],
             dataOut[1],
             en,
-            values=[RiscInteger(i) for i in range(32)],
+            values=list(range(32)),
         )
 
         # Offering data on an undefined memory address does nothing
         dataIn.value = [True, False]*16
         nodes = list(rf.resolve())
         assert not nodes
-        assert all(rf.values[i] == RiscInteger(i) for i in range(32))
+        assert all(rf.values[i] == i for i in range(32))
 
         clock.value = [False]
         nodes = list(rf.resolve())
         assert not nodes
-        assert all(rf.values[i] == RiscInteger(i) for i in range(32))
+        assert all(rf.values[i] == i for i in range(32))
 
         clock.value = [True]
         nodes = list(rf.resolve())
         assert not nodes
-        assert all(rf.values[i] == RiscInteger(i) for i in range(32))
+        assert all(rf.values[i] == i for i in range(32))
 
         # Defined data on a defined address with enable low does nothing
         dataIn.value = [True, False]*16
@@ -99,12 +98,12 @@ class TestRegisterFileElement:
         en.value = [False]
         nodes = list(rf.resolve())
         assert not nodes
-        assert all(rf.values[i] == RiscInteger(i) for i in range(32))
+        assert all(rf.values[i] == i for i in range(32))
 
         clock.value = [True]
         nodes = list(rf.resolve())
         assert not nodes
-        assert all(rf.values[i] == RiscInteger(i) for i in range(32))
+        assert all(rf.values[i] == i for i in range(32))
 
         # Offering defined data on a defined address with enable high writes
         # that data to the values at that address
@@ -114,13 +113,13 @@ class TestRegisterFileElement:
         en.value = [True]
         nodes = list(rf.resolve())
         assert not nodes
-        assert all(rf.values[i] == RiscInteger(i) for i in range(16))
+        assert all(rf.values[i] == i for i in range(16))
 
         clock.value = [True]
         nodes = list(rf.resolve())
         assert not nodes
         assert all(
-            rf.values[i] == RiscInteger(i)
+            rf.values[i] == i
             for i in range(32) if i != 10
         )
-        assert rf.values[10] == RiscInteger([True, False]*16)
+        assert rf.values[10] == array_to_int([True, False]*16)
