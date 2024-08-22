@@ -2,6 +2,7 @@ from functools import singledispatchmethod
 from enum import Enum
 
 from circuits.element import Element
+from circuits.mock import MockElement
 from circuits.node import Node
 from circuits.registry import ElementRegistry
 
@@ -11,7 +12,28 @@ InstructionType = Enum(
 )
 
 
-@ElementRegistry.add_impl('InstructionDecoder')
+class MockInstructionDecoderElement(MockElement):
+    inputs = {
+        'instr': (False, 32),
+    }
+
+    outputs = {
+        'addi': 1,
+        'add': 1,
+        'lw': 1,
+        'sw': 1,
+        'blt': 1,
+        'rd': 5,
+        'rs1': 5,
+        'rs2': 5,
+        'constant': 32,
+    }
+
+
+@ElementRegistry.add_impl(
+    'InstructionDecoder',
+    MockInstructionDecoderElement
+)
 class InstructionDecoderElement(Element):
     @singledispatchmethod
     def __init__(

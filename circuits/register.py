@@ -2,12 +2,29 @@ from functools import singledispatchmethod
 from typing import List, Union
 
 from circuits.element import Element
+from circuits.mock import MockElement
 from circuits.node import Node
 from circuits.registry import ElementRegistry
 from circuits.utils import array_to_int, int_to_array
 
 
-@ElementRegistry.add_impl('RegisterFile')
+class MockRegisterFileElement(MockElement):
+    inputs = {
+        'R1': 5,
+        'R2': 5,
+        'R3': 5,
+        'clock': 1,
+        'dataIn': 32,
+        'en': 1,
+    }
+
+    outputs = {
+        'dataOut1': 32,
+        'dataOut2': 32,
+    }
+
+
+@ElementRegistry.add_impl('RegisterFile', MockRegisterFileElement)
 class RegisterFileElement(Element):
     @singledispatchmethod
     def __init__(

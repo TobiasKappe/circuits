@@ -2,12 +2,28 @@ from functools import singledispatchmethod
 from typing import List, Union
 
 from circuits.element import Element
+from circuits.mock import MockElement
 from circuits.node import Node
 from circuits.registry import ElementRegistry
 from circuits.utils import array_to_int, int_to_array
 
 
-@ElementRegistry.add_impl('RAM')
+class MockRAMElement(MockElement):
+    inputs = {
+        'clock': 1,
+        'en': 1,
+        'dataIn': 32,
+        'memAddr1': 32,
+        'memAddr2': 32,
+    }
+
+    outputs = {
+        'dataOut1': 32,
+        'dataOut2': 32,
+    }
+
+
+@ElementRegistry.add_impl('RAM', MockRAMElement)
 class RAMElement(Element):
     @singledispatchmethod
     def __init__(

@@ -1,12 +1,29 @@
 from functools import singledispatchmethod
 
 from circuits.element import Element
+from circuits.mock import MockElement
 from circuits.node import Node
 from circuits.registry import ElementRegistry
 from circuits.utils import array_to_int, int_to_array, add_fixed_width
 
 
-@ElementRegistry.add_impl('ProgramCounter')
+class MockProgramCounterElement(MockElement):
+    inputs = {
+        'dist': 32,
+        'jump': 1,
+        'reset': 1,
+        'clock': 1,
+    }
+
+    outputs = {
+        'ctr': 32,
+    }
+
+
+@ElementRegistry.add_impl(
+    'ProgramCounter',
+    MockProgramCounterElement
+)
 class ProgramCounterElement(Element):
     @singledispatchmethod
     def __init__(

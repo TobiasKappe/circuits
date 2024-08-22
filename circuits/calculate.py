@@ -1,6 +1,7 @@
 from functools import singledispatchmethod
 
 from circuits.element import Element
+from circuits.mock import MockElement
 from circuits.node import Node
 from circuits.registry import ElementRegistry
 
@@ -32,7 +33,20 @@ class BitArithmeticElement(Element):
         return self.full_add(left, self.twos_complement(right))
 
 
-@ElementRegistry.add_impl('ALU')
+class MockALUElement(MockElement):
+    inputs = {
+        'controlSignalInput': 3,
+        'inp1': 32,
+        'inp2': 32,
+    }
+
+    outputs = {
+        'carryOut': 1,
+        'output': 32,
+    }
+
+
+@ElementRegistry.add_impl('ALU', MockALUElement)
 class ALUElement(BitArithmeticElement):
     @singledispatchmethod
     def __init__(
